@@ -62,20 +62,19 @@ public class Home extends AppCompatActivity {
             }
         }
         setContentView(R.layout.activity_home);
-//        ZXingLibrary.initDisplayOpinion(this);
-        findViewById(R.id.my_tab).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(Home.this, My.class));
-            }
-        });
-        findViewById(R.id.sign_iv).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Home.this, CaptureActivity.class);
-                startActivityForResult(intent, 1);
-            }
-        });
+//        findViewById(R.id.my_tab).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(Home.this, My.class));
+//            }
+//        });
+//        findViewById(R.id.sign_iv).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(Home.this, CaptureActivity.class);
+//                startActivityForResult(intent, 1);
+//            }
+//        });
         search = (SearchView) findViewById(R.id.search);
         history = (ImageButton) findViewById(R.id.b1);
         search.setIconifiedByDefault(false);
@@ -102,23 +101,23 @@ public class Home extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
-            //处理扫描结果（在界面上显示）
-            if (null != data) {
-                Bundle bundle = data.getExtras();
-                if (bundle == null) {
-                    return;
-                }
-                if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
-                    String result = bundle.getString(CodeUtils.RESULT_STRING);
-                    Toast.makeText(this, "解析结果:" + result, Toast.LENGTH_LONG).show();
-                } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
-                    Toast.makeText(Home.this, "解析二维码失败", Toast.LENGTH_LONG).show();
-                }
-            }
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == 1) {
+//            //处理扫描结果（在界面上显示）
+//            if (null != data) {
+//                Bundle bundle = data.getExtras();
+//                if (bundle == null) {
+//                    return;
+//                }
+//                if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
+//                    String result = bundle.getString(CodeUtils.RESULT_STRING);
+//                    Toast.makeText(this, "解析结果:" + result, Toast.LENGTH_LONG).show();
+//                } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
+//                    Toast.makeText(Home.this, "解析二维码失败", Toast.LENGTH_LONG).show();
+//                }
+//            }
+//        }
+//    }
 }
