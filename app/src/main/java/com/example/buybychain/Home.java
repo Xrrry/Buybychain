@@ -3,23 +3,15 @@ package com.example.buybychain;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import android.content.ContentResolver;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.provider.MediaStore;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.RadioGroup;
-import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.uuzuche.lib_zxing.activity.CaptureActivity;
@@ -28,11 +20,10 @@ import com.uuzuche.lib_zxing.activity.CodeUtils;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-public class Home extends AppCompatActivity {
+public class Home extends AppCompatActivity implements HomeFragment.OnFragmentInteractionListener {
 
-    private SearchView search;
-    private ImageButton history;
-
+    private RadioGroup mTabRadioGroup;
+    private SparseArray<Fragment> mFragmentSparseArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,62 +53,71 @@ public class Home extends AppCompatActivity {
             }
         }
         setContentView(R.layout.activity_home);
-//        findViewById(R.id.my_tab).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(Home.this, My.class));
-//            }
-//        });
-//        findViewById(R.id.sign_iv).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(Home.this, CaptureActivity.class);
-//                startActivityForResult(intent, 1);
-//            }
-//        });
-        search = (SearchView) findViewById(R.id.search);
-        history = (ImageButton) findViewById(R.id.b1);
-        search.setIconifiedByDefault(false);
-        search.setFocusable(false);
-        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                System.out.println(query);
-                //点击搜索
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                //输得内容改变的方法监听
-                return false;
-            }
-        });
-        history.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.scan_my).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                search.clearFocus();
+                Intent intent = new Intent(Home.this, CaptureActivity.class);
+                startActivityForResult(intent, 1);
             }
         });
+        initView();
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == 1) {
-//            //处理扫描结果（在界面上显示）
-//            if (null != data) {
-//                Bundle bundle = data.getExtras();
-//                if (bundle == null) {
-//                    return;
-//                }
-//                if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
-//                    String result = bundle.getString(CodeUtils.RESULT_STRING);
-//                    Toast.makeText(this, "解析结果:" + result, Toast.LENGTH_LONG).show();
-//                } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
-//                    Toast.makeText(Home.this, "解析二维码失败", Toast.LENGTH_LONG).show();
-//                }
+
+    private void initView() {
+        mTabRadioGroup = findViewById(R.id.tabs_rg);
+        mFragmentSparseArray = new SparseArray<>();
+        mFragmentSparseArray.append(R.id.home_tab, HomeFragment.newInstance("1","2"));
+        mFragmentSparseArray.append(R.id.my_tab, BlankFragment.newInstance("我的"));
+        mTabRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // 具体的fragment切换逻辑可以根据应用调整，例如使用show()/hide()
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        mFragmentSparseArray.get(checkedId)).commit();
+                switch (checkedId){
+                    case R.id.home_tab:
+//                        Toast.makeText(getApplicationContext(),"home",Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.my_tab:
+//                        Toast.makeText(getApplicationContext(), "my", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        });
+        // 默认显示第一个
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container,
+                mFragmentSparseArray.get(R.id.home_tab)).commit();
+//        findViewById(R.id.scan_my).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(Style3Activity.this, SignActivity.class));
 //            }
-//        }
-//    }
+//        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            //处理扫描结果（在界面上显示）
+            if (null != data) {
+                Bundle bundle = data.getExtras();
+                if (bundle == null) {
+                    return;
+                }
+                if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
+                    String result = bundle.getString(CodeUtils.RESULT_STRING);
+                    Toast.makeText(this, "解析结果:" + result, Toast.LENGTH_LONG).show();
+                } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
+                    Toast.makeText(Home.this, "解析二维码失败", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
 }
