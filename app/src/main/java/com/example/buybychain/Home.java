@@ -20,7 +20,7 @@ import com.uuzuche.lib_zxing.activity.CodeUtils;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-public class Home extends AppCompatActivity implements HomeFragment.OnFragmentInteractionListener {
+public class Home extends AppCompatActivity implements HomeFragment.OnFragmentInteractionListener, MyFragment.OnFragmentInteractionListener {
 
     private RadioGroup mTabRadioGroup;
     private SparseArray<Fragment> mFragmentSparseArray;
@@ -68,7 +68,7 @@ public class Home extends AppCompatActivity implements HomeFragment.OnFragmentIn
         mTabRadioGroup = findViewById(R.id.tabs_rg);
         mFragmentSparseArray = new SparseArray<>();
         mFragmentSparseArray.append(R.id.home_tab, HomeFragment.newInstance("1","2"));
-        mFragmentSparseArray.append(R.id.my_tab, BlankFragment.newInstance("我的"));
+        mFragmentSparseArray.append(R.id.my_tab, MyFragment.newInstance("1","2"));
         mTabRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
