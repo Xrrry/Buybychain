@@ -22,15 +22,47 @@
                 android:text="我"
                 android:textSize="90px"
                 android:textColor="@color/white" />
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/setting"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="60dp"
+                android:layout_marginRight="35dp"/>
 
-            <com.makeramen.roundedimageview.RoundedImageView
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="580dp"
-                android:layout_marginLeft="30dp"
-                app:riv_oval="true"
-                android:src="@drawable/head"/>
+                android:layout_marginLeft="30dp">
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/headImage"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+
+                    app:riv_oval="true"
+                    android:src="@drawable/head"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/headImage"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="5dp"
+                    android:text="18337295718"
+                    android:textSize="60px"
+                    android:textColor="@color/white"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/headImage"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="35dp"
+                    android:text="普通用户"
+                    android:textColor="@color/white"
+                    android:textSize="45px"/>
+            </RelativeLayout>
 
         </RelativeLayout>
 

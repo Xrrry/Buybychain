@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeFragment">
+    tools:context=".HomeFragment"
+    android:background="@color/whitesmoke">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -21,24 +21,57 @@
             app:queryHint="请输入标识码"
             android:background="@drawable/bt_shape" />
 
-        <ImageButton
-            android:id="@+id/b1"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:src="@mipmap/ic_rank_foreground"
+        <RelativeLayout
+            android:layout_width="130dp"
+            android:layout_height="180dp"
+            android:background="@drawable/home_button_shape"
             android:layout_marginTop="150dp"
-            android:layout_marginLeft="50dp" />
+            android:layout_marginLeft="50dp"
+            android:translationZ="10dp">
 
-        <ImageButton
-            android:id="@+id/b2"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            <ImageView
+                android:id="@+id/b1"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/rank" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="商家信誉\n排行榜"
+                android:layout_marginTop="100dp"
+                android:layout_marginLeft="20dp"
+                android:textSize="60px"
+                android:textColor="@color/black"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="130dp"
+            android:layout_height="180dp"
+            android:background="@drawable/home_button_shape"
             android:layout_marginTop="150dp"
             android:layout_marginRight="50dp"
             android:layout_alignParentRight="true"
-            android:src="@mipmap/ic_history_foreground" />
+            android:translationZ="10dp">
+
+            <ImageView
+                android:id="@+id/b2"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/history" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="查询记录"
+                android:layout_marginTop="100dp"
+                android:layout_marginLeft="20dp"
+                android:textSize="60px"
+                android:textColor="@color/black"/>
+        </RelativeLayout>
+
 
 
     </RelativeLayout>

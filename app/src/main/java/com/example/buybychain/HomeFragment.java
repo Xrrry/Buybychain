@@ -80,7 +80,6 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         search = (SearchView) view.findViewById(R.id.search);
-        history = (ImageButton) view.findViewById(R.id.b1);
         search.setIconifiedByDefault(false);
         search.setFocusable(false);
         View searchPlate = search.findViewById(androidx.appcompat.R.id.search_plate);
@@ -102,12 +101,6 @@ public class HomeFragment extends Fragment {
             public boolean onQueryTextChange(String newText) {
                 //输得内容改变的方法监听
                 return false;
-            }
-        });
-        history.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                search.clearFocus();
             }
         });
         return view;

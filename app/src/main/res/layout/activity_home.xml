@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Home">
 
     <FrameLayout
@@ -16,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_alignParentBottom="true"
-        android:background="#eeeeee"
+        android:background="@color/white"
         android:orientation="horizontal">
 
         <RadioButton
@@ -24,7 +25,8 @@
             style="@style/Custom.TabRadioButton"
             android:checked="true"
             android:drawableTop="@drawable/tab_home_selector"
-            android:text="主页" />
+            android:text="主页"
+            android:textSize="40px"/>
 
         <View style="@style/Custom.TabRadioButton" />
 
@@ -32,17 +34,18 @@
             android:id="@+id/my_tab"
             style="@style/Custom.TabRadioButton"
             android:drawableTop="@drawable/tab_my_selector"
-            android:text="我的" />
+            android:text="我的"
+            android:textSize="40px"/>
 
     </RadioGroup>
 
-    <ImageView
+    <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/scan_my"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_marginBottom="5dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="@android:color/transparent"
-        android:src="@mipmap/ic_scan_foreground" />
+        android:src="@drawable/scan_whitebackground"
+        app:riv_oval="true" />
 </RelativeLayout>
