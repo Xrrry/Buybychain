@@ -1,6 +1,7 @@
 package com.example.buybychain;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -9,12 +10,14 @@ import android.os.Bundle;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import androidx.appcompat.widget.SearchView;
 
@@ -38,6 +41,7 @@ public class HomeFragment extends Fragment {
     private String mParam2;
     private SearchView search;
     private ImageButton history;
+    private RelativeLayout bt1;
 
     private OnFragmentInteractionListener mListener;
 
@@ -80,6 +84,14 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         search = (SearchView) view.findViewById(R.id.search);
+        bt1 = view.findViewById(R.id.b1All);
+        bt1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i1 = new Intent(getActivity(), LoginActivity.class);
+                startActivity(i1);
+            }
+        });
         search.setIconifiedByDefault(false);
         search.setFocusable(false);
         View searchPlate = search.findViewById(androidx.appcompat.R.id.search_plate);

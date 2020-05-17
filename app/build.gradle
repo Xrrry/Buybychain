@@ -1,6 +1,21 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.mob.sdk'
+
+MobSDK {
+    appKey "2f4a5255b4edf"
+    appSecret "fb29adf21cf3abe9674ee3538cdfaeb5"
+    SMSSDK {}
+}
 
 android {
+    signingConfigs {
+        docker {
+            storeFile file('C:\\肖若寅\\buybychain.jks')
+            storePassword '123456'
+            keyAlias = 'key'
+            keyPassword '123456'
+        }
+    }
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
     ndkVersion "21.0.6113669"
