@@ -1,13 +1,18 @@
 package com.example.buybychain;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.Window;
@@ -20,14 +25,19 @@ import com.uuzuche.lib_zxing.activity.CodeUtils;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-public class Home extends AppCompatActivity implements HomeFragment.OnFragmentInteractionListener, MyFragment.OnFragmentInteractionListener {
+public class HomeActivity extends AppCompatActivity implements HomeFragment.OnFragmentInteractionListener, MyFragment.OnFragmentInteractionListener {
 
     private RadioGroup mTabRadioGroup;
     private SparseArray<Fragment> mFragmentSparseArray;
+    public static HomeActivity instance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        instance = this;
+        if (LoginActivity.instance != null) {
+            LoginActivity.instance.finish();
+        }
         // 隐藏标题栏
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         // 隐藏状态栏
@@ -56,10 +66,17 @@ public class Home extends AppCompatActivity implements HomeFragment.OnFragmentIn
         findViewById(R.id.scan_my).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Home.this, CaptureActivity.class);
+                Intent intent = new Intent(HomeActivity.this, CaptureActivity.class);
                 startActivityForResult(intent, 1);
             }
         });
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                    HomeActivity.this, new String[]{Manifest.permission.CAMERA}, 1);
+        } else {
+            // readContacts();
+        }
         initView();
     }
 
@@ -110,7 +127,7 @@ public class Home extends AppCompatActivity implements HomeFragment.OnFragmentIn
                     String result = bundle.getString(CodeUtils.RESULT_STRING);
                     Toast.makeText(this, "解析结果:" + result, Toast.LENGTH_LONG).show();
                 } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
-                    Toast.makeText(Home.this, "解析二维码失败", Toast.LENGTH_LONG).show();
+                    Toast.makeText(HomeActivity.this, "解析二维码失败", Toast.LENGTH_LONG).show();
                 }
             }
         }

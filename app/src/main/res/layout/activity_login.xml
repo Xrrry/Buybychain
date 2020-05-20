@@ -26,7 +26,6 @@
         android:inputType="phone"
         android:textColor="#D2D6D6"
         android:textColorHint="#D2D6D6"
-        android:textCursorDrawable="#D2D6D6"
         android:textSize="50px"/>
 
     <LinearLayout

@@ -3,7 +3,7 @@ package com.example.buybychain;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -21,28 +21,25 @@ import com.mob.MobSDK;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.HashMap;
 
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
-import cn.smssdk.gui.RegisterPage;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
-
+    public static LoginActivity instance;
     private EditText etPhoneNumber;    // 电话号码
     private Button sendVerificationCode;  // 发送验证码
     private EditText etVerificationCode;  // 验证码
     private Button nextStep;        // 下一步
-
     private String phoneNumber;     // 电话号码
     private String verificationCode;  // 验证码
     private Handler Myhandler = new Handler();
-
     private boolean flag;  // 操作是否成功
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        instance = this;
         // 隐藏标题栏
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         // 隐藏状态栏
@@ -68,6 +65,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         }
         setContentView(R.layout.activity_login);
+
+        SharedPreferences sp = getSharedPreferences("login", getApplicationContext().MODE_PRIVATE);
+        String phone = sp.getString("phone", null);
+        if (phone != null) {
+            Buybychain application = (Buybychain) getApplicationContext();
+            application.setPhone(phone);
+            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            startActivity(intent);
+            overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+        }
 
         etPhoneNumber = (EditText) findViewById(R.id.editText);
         sendVerificationCode = (Button) findViewById(R.id.button2);
@@ -153,13 +160,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     Toast.makeText(getApplicationContext(), "验证成功", Toast.LENGTH_SHORT).show();
                     EditText ed1 = (EditText) findViewById(R.id.editText);
                     final String phone = ed1.getText().toString();
-//                    final MyApplication application = (MyApplication) getApplicationContext();
-//                    application.setPhone(phone);
-//                    SharedPreferences sp = getSharedPreferences("login", getApplicationContext().MODE_PRIVATE);
-//                    sp.edit()
-//                            .putString("phone", phone)
-//                            .apply();
-//                    addNewUser(phone);
+                    final Buybychain application = (Buybychain) getApplication();
+                    application.setPhone(phone);
+                    SharedPreferences sp = getSharedPreferences("login", getApplicationContext().MODE_PRIVATE);
+                    sp.edit()
+                            .putString("phone", phone)
+                            .apply();
+                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
                 } else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
                     // 获取验证码成功，true为智能验证，false为普通下发短信
                     Toast.makeText(getApplicationContext(), "验证码已发送", Toast.LENGTH_SHORT).show();
