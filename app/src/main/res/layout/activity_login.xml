@@ -9,22 +9,20 @@
     tools:context=".LoginActivity">
 
     <ImageView
-        android:layout_width="250dp"
-        android:layout_height="250dp"
+        android:layout_width="3000dp"
+        android:layout_height="300dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="100dp"
-        android:src="@drawable/app"/>
+        android:layout_marginTop="70dp"
+        android:src="@drawable/logo"/>
 
     <EditText
         android:id="@+id/editText"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_marginTop="50dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:hint="请输入手机号"
         android:inputType="phone"
-        android:textColor="#D2D6D6"
         android:textColorHint="#D2D6D6"
         android:textSize="50px"/>
 
@@ -42,7 +40,6 @@
             android:layout_weight="30"
             android:hint="请输入验证码"
             android:inputType="numberPassword"
-            android:textColor="#D2D6D6"
             android:textColorHint="#D2D6D6"
             android:textSize="50px"/>
 

@@ -38,6 +38,9 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnFr
         if (LoginActivity.instance != null) {
             LoginActivity.instance.finish();
         }
+        if (Launcher.instance != null) {
+            Launcher.instance.finish();
+        }
         // 隐藏标题栏
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         // 隐藏状态栏
