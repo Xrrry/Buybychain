@@ -27,16 +27,16 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:name">
+        <activity android:name=".MyCamera"></activity>
         <activity android:name=".Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity">
-
-        </activity>
-        <activity android:name=".HomeActivity"></activity>
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".HomeActivity" />
         <activity android:name=".MainActivity" />
     </application>
 

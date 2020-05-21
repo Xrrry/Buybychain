@@ -6,12 +6,15 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.Manifest;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
@@ -20,6 +23,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.uuzuche.lib_zxing.activity.CaptureActivity;
+import com.uuzuche.lib_zxing.activity.CaptureFragment;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 
 import java.lang.reflect.Field;
@@ -66,11 +70,16 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnFr
             }
         }
         setContentView(R.layout.activity_home);
+
         findViewById(R.id.scan_my).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, CaptureActivity.class);
+                Intent intent = new Intent(HomeActivity.this, MyCamera.class);
                 startActivityForResult(intent, 1);
+//                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+//                intent.addCategory(Intent.CATEGORY_OPENABLE);
+//                intent.setType("image/*");
+//                startActivityForResult(intent, 2);
             }
         });
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
@@ -128,9 +137,36 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnFr
                 }
                 if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
                     String result = bundle.getString(CodeUtils.RESULT_STRING);
-                    Toast.makeText(this, "解析结果:" + result, Toast.LENGTH_LONG).show();
+                    Toast.makeText(HomeActivity.this, "解析结果:" + result, Toast.LENGTH_LONG).show();
                 } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
                     Toast.makeText(HomeActivity.this, "解析二维码失败", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+        if (requestCode == 2) {
+            if (data != null) {
+                Uri uri = data.getData();
+                ContentResolver cr = getContentResolver();
+                try {
+                    Bitmap mBitmap = MediaStore.Images.Media.getBitmap(cr, uri);//显得到bitmap图片
+
+                    CodeUtils.analyzeBitmap(String.valueOf(mBitmap), new CodeUtils.AnalyzeCallback() {
+                        @Override
+                        public void onAnalyzeSuccess(Bitmap mBitmap, String result) {
+                            Toast.makeText(HomeActivity.this, "解析结果:" + result, Toast.LENGTH_LONG).show();
+                        }
+
+                        @Override
+                        public void onAnalyzeFailed() {
+                            Toast.makeText(HomeActivity.this, "解析二维码失败", Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+                    if (mBitmap != null) {
+                        mBitmap.recycle();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }
