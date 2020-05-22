@@ -40,7 +40,6 @@ public class HomeFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private SearchView search;
-    private ImageButton history;
     private RelativeLayout bt1;
 
     private OnFragmentInteractionListener mListener;
@@ -88,7 +87,7 @@ public class HomeFragment extends Fragment {
         bt1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i1 = new Intent(getActivity(), LoginActivity.class);
+                Intent i1 = new Intent(getActivity(), CommodityDetail.class);
                 startActivity(i1);
             }
         });

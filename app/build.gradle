@@ -52,4 +52,5 @@ dependencies {
     implementation 'com.squareup.okio:okio:1.17.4'
     implementation 'cn.yipianfengye.android:zxing-library:2.2'
     implementation 'com.makeramen:roundedimageview:2.2.1'
+    implementation 'com.google.code.gson:gson:2.8.6'
 }
