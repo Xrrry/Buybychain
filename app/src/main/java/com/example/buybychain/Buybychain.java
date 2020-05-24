@@ -7,6 +7,7 @@ import com.uuzuche.lib_zxing.DisplayUtil;
 
 public class Buybychain extends Application {
     private String phone;
+    private String type;
 
 
     @Override
@@ -20,6 +21,12 @@ public class Buybychain extends Application {
     }
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+    public void setType(String type) {
+        this.type = type;
+    }
+    public String getType() {
+        return type;
     }
     private void initDisplayOpinion() {
         DisplayMetrics dm = getResources().getDisplayMetrics();

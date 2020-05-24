@@ -28,7 +28,6 @@ public class Launcher extends AppCompatActivity {
 
         SharedPreferences sp = getSharedPreferences("login", getApplicationContext().MODE_PRIVATE);
         String phone = sp.getString("phone", null);
-
         Timer timer=new Timer();
         TimerTask task1=new TimerTask() {
             public void run() {
@@ -44,10 +43,23 @@ public class Launcher extends AppCompatActivity {
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         };
+        TimerTask task3=new TimerTask() {
+            public void run() {
+                Intent intent = new Intent(Launcher.this, ProducerHomeActivity.class);
+                startActivity(intent);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            }
+        };
         if (phone != null) {
             Buybychain application = (Buybychain) getApplication();
             application.setPhone(phone);
-            timer.schedule(task1,1000);
+            application.setType("1");
+            if(application.getType().equals("1")) {
+                timer.schedule(task1,1000);
+            }
+            else {
+                timer.schedule(task3,1000);
+            }
         }
         else {
             timer.schedule(task2,1000);

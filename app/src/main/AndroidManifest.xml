@@ -27,7 +27,8 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:name">
-        <activity android:name=".CommodityDetail"></activity>
+        <activity android:name=".ProducerHomeActivity"></activity>
+        <activity android:name=".CommodityDetail" />
         <activity android:name=".MyCamera" />
         <activity android:name=".Launcher">
             <intent-filter>
