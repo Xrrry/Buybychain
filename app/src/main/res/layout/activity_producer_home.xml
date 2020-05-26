@@ -26,7 +26,7 @@
             android:checked="true"
             android:drawableTop="@drawable/tab_home_selector"
             android:text="主页"
-            android:textSize="40px"/>
+            android:textSize="13sp"/>
 
         <View style="@style/Custom.TabRadioButton" />
 
@@ -35,7 +35,7 @@
             style="@style/Custom.TabRadioButton"
             android:drawableTop="@drawable/tab_my_selector"
             android:text="我的"
-            android:textSize="40px"/>
+            android:textSize="13sp"/>
 
     </RadioGroup>
 

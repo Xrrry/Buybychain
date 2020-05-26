@@ -97,19 +97,19 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void getAsyn(String url) {
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder().url(url).build();
-        Call call = client.newCall(request);
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                handler.post(new Runnable() {
+                OkHttpClient client = new OkHttpClient();
+                Request request = new Request.Builder().url(url).build();
+                Call call = client.newCall(request);
+                call.enqueue(new Callback() {
                     @Override
-                    public void run() {
-                        Toast.makeText(getApplicationContext(), "get请求失败" ,Toast.LENGTH_LONG).show();
+                    public void onFailure(Call call, IOException e) {
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(), "get请求失败" ,Toast.LENGTH_LONG).show();
+                            }
+                        });
                     }
-                });
-            }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {

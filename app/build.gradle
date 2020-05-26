@@ -53,4 +53,6 @@ dependencies {
     implementation 'cn.yipianfengye.android:zxing-library:2.2'
     implementation 'com.makeramen:roundedimageview:2.2.1'
     implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'org.projectlombok:lombok:1.18.8'
+    annotationProcessor 'org.projectlombok:lombok:1.18.8'
 }

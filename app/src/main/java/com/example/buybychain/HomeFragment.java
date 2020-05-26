@@ -10,6 +10,7 @@ import android.os.Bundle;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +19,18 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.SearchView;
+
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 
 /**
@@ -41,6 +52,9 @@ public class HomeFragment extends Fragment {
     private String mParam2;
     private SearchView search;
     private RelativeLayout bt1;
+    private RelativeLayout bt2;
+    final Handler handler = new Handler();
+    private TextView textView;
 
     private OnFragmentInteractionListener mListener;
 
@@ -91,8 +105,17 @@ public class HomeFragment extends Fragment {
                 startActivity(i1);
             }
         });
+        bt2 = view.findViewById(R.id.b2All);
+        bt2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getAsyn("http://buybychain.cn:8888/query?out_id=12300000");
+            }
+        });
         search.setIconifiedByDefault(false);
         search.setFocusable(false);
+        textView = view.findViewById(R.id.tx5);
+
         View searchPlate = search.findViewById(androidx.appcompat.R.id.search_plate);
         if (searchPlate != null) {
             searchPlate.setBackgroundColor(Color.TRANSPARENT);
@@ -115,6 +138,39 @@ public class HomeFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    public void getAsyn(String url) {
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder().url(url).build();
+        Call call = client.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                System.out.println(e);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getActivity(), "get请求失败" ,Toast.LENGTH_LONG).show();
+
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if(response.isSuccessful()){
+                    final String body = response.body().string();
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            textView.setText(body);
+                            Toast.makeText(getActivity(), "get请求成功" ,Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+            }
+        });
     }
 
     // TODO: Rename method, update argument and hook method into UI event
