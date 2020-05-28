@@ -27,12 +27,14 @@
         android:layout_marginTop="10dp"
         android:orientation="vertical">
         <TextView
+            android:id="@+id/com_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="小米10 Pro"
             android:textColor="@color/black"
             android:textSize="40sp"/>
         <TextView
+            android:id="@+id/com_else"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="价格：¥3999  类别：电子产品  产地：北京"
@@ -81,6 +83,24 @@
                 android:textSize="18sp"
                 android:textColor="@color/black"/>
         </LinearLayout>
+<!--        <LinearLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="50dp">-->
+<!--            <ImageView-->
+<!--                android:layout_width="20dp"-->
+<!--                android:layout_height="20dp"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:src="@drawable/ling"/>-->
+<!--            <TextView-->
+<!--                android:id="@+id/history"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginLeft="15dp"-->
+<!--                android:text="2020-05-22 18:30:12\n买家：18912345678\n查询"-->
+<!--                android:textSize="18sp"-->
+<!--                android:textColor="@color/black"/>-->
+<!--        </LinearLayout>-->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -91,25 +111,7 @@
                 android:layout_marginTop="5dp"
                 android:src="@drawable/ling"/>
             <TextView
-                android:id="@+id/history"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:text="2020-05-22 18:30:12\n买家：18912345678\n查询"
-                android:textSize="18sp"
-                android:textColor="@color/black"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp">
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginTop="5dp"
-                android:src="@drawable/ling"/>
-            <TextView
-                android:id="@+id/costomer"
+                android:id="@+id/customer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"

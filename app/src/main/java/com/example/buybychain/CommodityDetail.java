@@ -5,13 +5,37 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.Window;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bean.SearchDetail;
+import com.google.gson.Gson;
+
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class CommodityDetail extends AppCompatActivity {
+    final Handler handler = new Handler();
+    private TextView com_name;
+    private TextView com_else;
+    private TextView producer;
+    private TextView saler;
+    private TextView customer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,5 +65,94 @@ public class CommodityDetail extends AppCompatActivity {
             }
         }
         setContentView(R.layout.activity_commodity_detail);
+        com_name = findViewById(R.id.com_name);
+        com_else = findViewById(R.id.com_else);
+        producer = findViewById(R.id.produser);
+        saler = findViewById(R.id.saler);
+        customer = findViewById(R.id.customer);
+        post("http://buybychain.cn:8888/query");
+
+    }
+
+    public void getAsyn(String url) {
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder().url(url).build();
+        Call call = client.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                System.out.println(e);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getApplicationContext(), "get请求失败" ,Toast.LENGTH_LONG).show();
+
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if(response.isSuccessful()){
+                    final String body = response.body().string();
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+//                            textView.setText(body);
+                            Toast.makeText(getApplicationContext(), "get请求成功" ,Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+            }
+        });
+    }
+    public void post(String url){
+        OkHttpClient client = new OkHttpClient();
+        FormBody body = new FormBody.Builder()
+                .add("out_id","12300000")
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+        Call call = client.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getApplicationContext(), "post请求失败" ,Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if(response.isSuccessful()) {
+                    final String body = response.body().string();
+                    Gson gson = new Gson();
+                    final SearchDetail searchDetail = gson.fromJson(body,SearchDetail.class);
+                    final Long timeStamp = System.currentTimeMillis();  //获取当前时间戳
+                    final SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    final String sd = sdf.format(new Date(Long.parseLong(String.valueOf(timeStamp))));
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            com_name.setText(searchDetail.getCom_name());
+                            com_else.setText("价格：¥" + searchDetail.getCom_price() +
+                                    "  类别：" + searchDetail.getCom_cate() + "  产地：" + searchDetail.getCom_place());
+                            String outTime = sdf.format(new Date(Long.valueOf(searchDetail.getOut_birthday() + "000")));
+                            producer.setText(outTime + "\n生产商：" + searchDetail.getPro_nickname() + "\n出厂");
+                            String sellTime = sdf.format(new Date(Long.valueOf(searchDetail.getSell_time() + "000")));
+                            saler.setText(sellTime + "\n销售商：" + searchDetail.getSal_nickname() + "\n售出");
+                            customer.setText(sd + "\n买家：" + searchDetail.getSell_cus_acc() + "\n查询");
+                            Toast.makeText(getApplicationContext(), "post请求成功", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+            }
+        });
     }
 }
