@@ -137,7 +137,10 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnFr
                 }
                 if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
                     String result = bundle.getString(CodeUtils.RESULT_STRING);
-                    Toast.makeText(HomeActivity.this, "解析结果:" + result, Toast.LENGTH_LONG).show();
+//                    Toast.makeText(HomeActivity.this, "解析结果:" + result, Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(HomeActivity.this, CommodityDetail.class);
+                    intent.putExtra("scanResult",result);
+                    startActivity(intent);
                 } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
                     Toast.makeText(HomeActivity.this, "解析二维码失败", Toast.LENGTH_LONG).show();
                 }

@@ -30,14 +30,12 @@
             android:id="@+id/com_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="小米10 Pro"
             android:textColor="@color/black"
             android:textSize="40sp"/>
         <TextView
             android:id="@+id/com_else"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="价格：¥3999  类别：电子产品  产地：北京"
             android:textSize="18sp"
             android:textColor="@color/black"/>
     </LinearLayout>
@@ -52,16 +50,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <ImageView
+                android:id="@+id/image1"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginTop="5dp"
-                android:src="@drawable/ling"/>
+                android:src="@drawable/ling"
+                android:visibility="invisible"/>
             <TextView
                 android:id="@+id/produser"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:text="2020-04-20 00:00:00\n生产商：北京小米科技有限公司\n出厂"
+                android:layout_marginStart="15dp"
                 android:textSize="18sp"
                 android:textColor="@color/black" />
         </LinearLayout>
@@ -70,16 +69,17 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp">
             <ImageView
+                android:id="@+id/image2"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginTop="5dp"
-                android:src="@drawable/ling"/>
+                android:src="@drawable/ling"
+                android:visibility="invisible"/>
             <TextView
                 android:id="@+id/saler"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:text="2020-05-20 18:30:12\n销售商：京东\n卖出"
+                android:layout_marginStart="15dp"
                 android:textSize="18sp"
                 android:textColor="@color/black"/>
         </LinearLayout>
@@ -106,16 +106,17 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp">
             <ImageView
+                android:id="@+id/image3"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginTop="5dp"
-                android:src="@drawable/ling"/>
+                android:src="@drawable/ling"
+                android:visibility="invisible"/>
             <TextView
                 android:id="@+id/customer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:text="2020-05-23 18:35:12\n买家：18337295718(本人)\n查询(本次)"
+                android:layout_marginStart="15dp"
                 android:textSize="18sp"
                 android:textColor="@color/black"/>
         </LinearLayout>

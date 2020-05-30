@@ -3,11 +3,13 @@ package com.example.buybychain;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +38,7 @@ public class CommodityDetail extends AppCompatActivity {
     private TextView producer;
     private TextView saler;
     private TextView customer;
+    private ImageView im1,im2,im3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +73,11 @@ public class CommodityDetail extends AppCompatActivity {
         producer = findViewById(R.id.produser);
         saler = findViewById(R.id.saler);
         customer = findViewById(R.id.customer);
-        post("http://buybychain.cn:8888/query");
+        im1 = findViewById(R.id.image1);
+        im2 = findViewById(R.id.image2);
+        im3 = findViewById(R.id.image3);
+        String scanResult = getIntent().getStringExtra("scanResult");
+        post("http://buybychain.cn:8888/query",scanResult);
 
     }
 
@@ -99,17 +106,17 @@ public class CommodityDetail extends AppCompatActivity {
                         @Override
                         public void run() {
 //                            textView.setText(body);
-                            Toast.makeText(getApplicationContext(), "get请求成功" ,Toast.LENGTH_LONG).show();
+//                            Toast.makeText(getApplicationContext(), "get请求成功" ,Toast.LENGTH_LONG).show();
                         }
                     });
                 }
             }
         });
     }
-    public void post(String url){
+    public void post(String url, String scanResult){
         OkHttpClient client = new OkHttpClient();
         FormBody body = new FormBody.Builder()
-                .add("out_id","12300000")
+                .add("out_id",scanResult)
                 .build();
 
         Request request = new Request.Builder()
@@ -148,7 +155,10 @@ public class CommodityDetail extends AppCompatActivity {
                             String sellTime = sdf.format(new Date(Long.valueOf(searchDetail.getSell_time() + "000")));
                             saler.setText(sellTime + "\n销售商：" + searchDetail.getSal_nickname() + "\n售出");
                             customer.setText(sd + "\n买家：" + searchDetail.getSell_cus_acc() + "\n查询");
-                            Toast.makeText(getApplicationContext(), "post请求成功", Toast.LENGTH_LONG).show();
+                            im1.setVisibility(View.VISIBLE);
+                            im2.setVisibility(View.VISIBLE);
+                            im3.setVisibility(View.VISIBLE);
+//                            Toast.makeText(getApplicationContext(), "post请求成功", Toast.LENGTH_LONG).show();
                         }
                     });
                 }

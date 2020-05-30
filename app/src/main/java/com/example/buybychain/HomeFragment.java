@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -51,10 +52,10 @@ public class HomeFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private SearchView search;
+    private TextView searchText;
     private RelativeLayout bt1;
     private RelativeLayout bt2;
     final Handler handler = new Handler();
-    private TextView textView;
 
     private OnFragmentInteractionListener mListener;
 
@@ -98,25 +99,25 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         search = (SearchView) view.findViewById(R.id.search);
         bt1 = view.findViewById(R.id.b1All);
-        bt1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i1 = new Intent(getActivity(), CommodityDetail.class);
-                startActivity(i1);
-            }
-        });
+//        bt1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent i1 = new Intent(getActivity(), CommodityDetail.class);
+//                startActivity(i1);
+//            }
+//        });
         bt2 = view.findViewById(R.id.b2All);
-        bt2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getAsyn("http://buybychain.cn:8888/query?out_id=12300000");
-            }
-        });
+//        bt2.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
         search.setIconifiedByDefault(false);
         search.setFocusable(false);
-        textView = view.findViewById(R.id.tx5);
 
         View searchPlate = search.findViewById(androidx.appcompat.R.id.search_plate);
+        searchText = search.findViewById(androidx.appcompat.R.id.search_src_text);
         if (searchPlate != null) {
             searchPlate.setBackgroundColor(Color.TRANSPARENT);
         }
@@ -127,6 +128,11 @@ public class HomeFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 System.out.println(query);
+                search.clearFocus();
+                searchText.setText("");
+                Intent intent = new Intent(getActivity(), CommodityDetail.class);
+                intent.putExtra("scanResult",query);
+                startActivity(intent);
                 //点击搜索
                 return false;
             }
@@ -138,39 +144,6 @@ public class HomeFragment extends Fragment {
             }
         });
         return view;
-    }
-
-    public void getAsyn(String url) {
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder().url(url).build();
-        Call call = client.newCall(request);
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                System.out.println(e);
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getActivity(), "get请求失败" ,Toast.LENGTH_LONG).show();
-
-                    }
-                });
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if(response.isSuccessful()){
-                    final String body = response.body().string();
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            textView.setText(body);
-                            Toast.makeText(getActivity(), "get请求成功" ,Toast.LENGTH_LONG).show();
-                        }
-                    });
-                }
-            }
-        });
     }
 
     // TODO: Rename method, update argument and hook method into UI event
