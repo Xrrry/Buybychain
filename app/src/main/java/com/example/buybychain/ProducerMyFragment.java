@@ -1,6 +1,7 @@
 package com.example.buybychain;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -9,6 +10,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.leon.lib.settingview.LSettingItem;
 
 
 /**
@@ -66,7 +69,49 @@ public class ProducerMyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_producer_my, container, false);
+        View view = inflater.inflate(R.layout.fragment_producer_my, container, false);
+        LSettingItem bt1 = view.findViewById(R.id.pro1);
+        LSettingItem bt2 = view.findViewById(R.id.pro2);
+        LSettingItem bt3 = view.findViewById(R.id.pro3);
+        LSettingItem bt4 = view.findViewById(R.id.pro4);
+        LSettingItem bt5 = view.findViewById(R.id.pro5);
+
+        bt1.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
+            @Override
+            public void click() {
+                Intent intent = new Intent(getActivity(), Modification.class);
+                startActivity(intent);
+            }
+        });
+        bt2.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
+            @Override
+            public void click() {
+                Intent intent = new Intent(getActivity(), Preset.class);
+                startActivity(intent);
+            }
+        });
+        bt3.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
+            @Override
+            public void click() {
+                Intent intent = new Intent(getActivity(), UploadHistory.class);
+                startActivity(intent);
+            }
+        });
+        bt4.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
+            @Override
+            public void click() {
+                Intent intent = new Intent(getActivity(), Feedback.class);
+                startActivity(intent);
+            }
+        });
+        bt5.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
+            @Override
+            public void click() {
+                Intent intent = new Intent(getActivity(), About.class);
+                startActivity(intent);
+            }
+        });
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

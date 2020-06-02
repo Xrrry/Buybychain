@@ -29,7 +29,13 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:name">
-        <activity android:name=".ProducerHomeActivity"></activity>
+        <activity android:name=".UploadHistory"></activity>
+        <activity android:name=".Preset" />
+        <activity android:name=".Modification" />
+        <activity android:name=".Authentication" />
+        <activity android:name=".About" />
+        <activity android:name=".Feedback" />
+        <activity android:name=".ProducerHomeActivity" />
         <activity android:name=".CommodityDetail" />
         <activity android:name=".MyCamera" />
         <activity android:name=".Launcher">
