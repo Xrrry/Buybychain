@@ -1,6 +1,8 @@
 package com.example.buybychain;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.leon.lib.settingview.LSettingItem;
@@ -32,6 +35,7 @@ public class MyFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private ImageView signout;
 
     private OnFragmentInteractionListener mListener;
 
@@ -75,7 +79,6 @@ public class MyFragment extends Fragment {
         LSettingItem bt2 = view.findViewById(R.id.my2);
         LSettingItem bt3 = view.findViewById(R.id.my3);
         LSettingItem bt4 = view.findViewById(R.id.my4);
-
         bt1.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
             @Override
             public void click() {
@@ -102,6 +105,28 @@ public class MyFragment extends Fragment {
             public void click() {
                 Intent intent = new Intent(getActivity(), About.class);
                 startActivity(intent);
+            }
+        });
+        signout = view.findViewById(R.id.signout);
+        signout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("提示");
+                builder.setMessage("确认退出吗？");
+                builder.setPositiveButton("退出", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent i1 = new Intent(getActivity(), LoginActivity.class);
+                        startActivity(i1);
+                    }
+                });
+                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                });
+                builder.show();
             }
         });
         return view;

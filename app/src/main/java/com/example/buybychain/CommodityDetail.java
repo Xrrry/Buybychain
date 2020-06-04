@@ -158,7 +158,6 @@ public class CommodityDetail extends AppCompatActivity {
                             im1.setVisibility(View.VISIBLE);
                             im2.setVisibility(View.VISIBLE);
                             im3.setVisibility(View.VISIBLE);
-//                            Toast.makeText(getApplicationContext(), "post请求成功", Toast.LENGTH_LONG).show();
                         }
                     });
                 }

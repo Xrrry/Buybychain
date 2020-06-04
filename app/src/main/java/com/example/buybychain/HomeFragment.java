@@ -107,12 +107,13 @@ public class HomeFragment extends Fragment {
 //            }
 //        });
         bt2 = view.findViewById(R.id.b2All);
-//        bt2.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
+        bt2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i1 = new Intent(getActivity(), History.class);
+                startActivity(i1);
+            }
+        });
         search.setIconifiedByDefault(false);
         search.setFocusable(false);
 

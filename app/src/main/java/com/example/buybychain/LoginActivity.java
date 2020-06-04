@@ -17,13 +17,25 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.bean.SearchDetail;
+import com.google.gson.Gson;
 import com.mob.MobSDK;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     public static LoginActivity instance;
@@ -42,6 +54,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         instance = this;
         if (Launcher.instance != null) {
             Launcher.instance.finish();
+        }
+        if (HomeActivity.instance != null) {
+            HomeActivity.instance.finish();
+        }
+        if (ProducerHomeActivity.instance != null) {
+            ProducerHomeActivity.instance.finish();
         }
         // 隐藏标题栏
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -71,13 +89,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         SharedPreferences sp = getSharedPreferences("login", getApplicationContext().MODE_PRIVATE);
         String phone = sp.getString("phone", null);
-        if (phone != null) {
-            Buybychain application = (Buybychain) getApplicationContext();
-            application.setPhone(phone);
-            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-            startActivity(intent);
-            overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
-        }
+//        if (phone != null) {
+//            Buybychain application = (Buybychain) getApplicationContext();
+//            application.setPhone(phone);
+//            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+//            startActivity(intent);
+//            overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+//        }
 
         etPhoneNumber = (EditText) findViewById(R.id.editText);
         sendVerificationCode = (Button) findViewById(R.id.button2);
@@ -147,6 +165,27 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+
+    public static String getJsonData(String urlStr, RequestBody formBody) {
+        String data = "";
+
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(urlStr)
+                .post(formBody)
+                .build();
+        Call call = client.newCall(request);
+
+        try {
+            Response response = call.execute();
+            data = response.body().string();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return data;
+    }
+
     @SuppressLint("HandlerLeak")
     Handler handler = new Handler() {
         @Override
@@ -190,6 +229,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         }
     };
+
 
     @Override
     protected void onDestroy() {
