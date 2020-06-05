@@ -81,38 +81,6 @@ public class CommodityDetail extends AppCompatActivity {
 
     }
 
-    public void getAsyn(String url) {
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder().url(url).build();
-        Call call = client.newCall(request);
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                System.out.println(e);
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getApplicationContext(), "get请求失败" ,Toast.LENGTH_LONG).show();
-
-                    }
-                });
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if(response.isSuccessful()){
-                    final String body = response.body().string();
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-//                            textView.setText(body);
-//                            Toast.makeText(getApplicationContext(), "get请求成功" ,Toast.LENGTH_LONG).show();
-                        }
-                    });
-                }
-            }
-        });
-    }
     public void post(String url, String scanResult){
         OkHttpClient client = new OkHttpClient();
         FormBody body = new FormBody.Builder()

@@ -15,9 +15,12 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.bean.PerAllHistory;
 import com.bean.SearchDetail;
+import com.bean.User;
 import com.google.gson.Gson;
 import com.mob.MobSDK;
 
@@ -26,6 +29,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
@@ -47,6 +51,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private String verificationCode;  // 验证码
     private Handler Myhandler = new Handler();
     private boolean flag;  // 操作是否成功
+    private String type = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,6 +132,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         phoneNumber = etPhoneNumber.getText().toString();
                         SMSSDK.getVerificationCode("86", phoneNumber); // 发送验证码给号码的 phoneNumber 的手机
                         etVerificationCode.requestFocus();
+                        post("http://buybychain.cn:8888/loginSearch",phoneNumber);
                         Myhandler.post(new Runnable() {
                             @Override
                             public void run() {
@@ -165,26 +171,43 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-
-    public static String getJsonData(String urlStr, RequestBody formBody) {
-        String data = "";
-
+    public void post(String url, String phone){
         OkHttpClient client = new OkHttpClient();
+        FormBody body = new FormBody.Builder()
+                .add("phone",phone)
+                .build();
+
         Request request = new Request.Builder()
-                .url(urlStr)
-                .post(formBody)
+                .url(url)
+                .post(body)
                 .build();
         Call call = client.newCall(request);
+        call.enqueue(new okhttp3.Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getApplicationContext(), "post请求失败" ,Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
 
-        try {
-            Response response = call.execute();
-            data = response.body().string();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return data;
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if(response.isSuccessful()) {
+                    final String body = response.body().string();
+                    if (!body.equals("不存在")) {
+                        Gson gson = new Gson();
+                        User user = gson.fromJson(body,User.class);
+                        type = user.getUser_type();
+                        System.out.println(type);
+                    }
+                }
+            }
+        });
     }
+
 
     @SuppressLint("HandlerLeak")
     Handler handler = new Handler() {
@@ -199,7 +222,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 // 如果操作成功
                 if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
                     // 校验验证码，返回校验的手机和国家代码
-                    Toast.makeText(getApplicationContext(), "验证成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
                     EditText ed1 = (EditText) findViewById(R.id.editText);
                     final String phone = ed1.getText().toString();
                     final Buybychain application = (Buybychain) getApplication();
@@ -208,9 +231,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     sp.edit()
                             .putString("phone", phone)
                             .apply();
-                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                    startActivity(intent);
-                    overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+                    if(type.equals("1")) {
+                        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                        startActivity(intent);
+                        overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+                    }
+                    else {
+                        Intent intent = new Intent(getApplicationContext(), ProducerHomeActivity.class);
+                        startActivity(intent);
+                        overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+                    }
                 } else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
                     // 获取验证码成功，true为智能验证，false为普通下发短信
                     Toast.makeText(getApplicationContext(), "验证码已发送", Toast.LENGTH_SHORT).show();
@@ -228,8 +258,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
             }
         }
-    };
 
+    };
 
     @Override
     protected void onDestroy() {
