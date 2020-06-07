@@ -90,7 +90,7 @@ public class ProducerMyFragment extends Fragment {
         bt2.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
             @Override
             public void click() {
-                Intent intent = new Intent(getActivity(), Preset.class);
+                Intent intent = new Intent(getActivity(), UpPreCom.class);
                 startActivity(intent);
             }
         });

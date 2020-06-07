@@ -222,7 +222,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 // 如果操作成功
                 if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
                     // 校验验证码，返回校验的手机和国家代码
-                    Toast.makeText(getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
                     EditText ed1 = (EditText) findViewById(R.id.editText);
                     final String phone = ed1.getText().toString();
                     final Buybychain application = (Buybychain) getApplication();
@@ -232,11 +231,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             .putString("phone", phone)
                             .apply();
                     if(type.equals("1")) {
+                        Toast.makeText(getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                         startActivity(intent);
                         overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
                     }
+                    else if (type.equals("2")&&type.equals("3")){
+                        Toast.makeText(getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getApplicationContext(), ProducerHomeActivity.class);
+                        startActivity(intent);
+                        overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+                    }
                     else {
+                        Toast.makeText(getApplicationContext(), "注册成功", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getApplicationContext(), ProducerHomeActivity.class);
                         startActivity(intent);
                         overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);

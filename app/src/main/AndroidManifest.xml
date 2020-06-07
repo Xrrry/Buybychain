@@ -29,7 +29,8 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:name">
-        <activity android:name=".History"></activity>
+        <activity android:name=".UpPreCom"></activity>
+        <activity android:name=".History" />
         <activity android:name=".UploadHistory" />
         <activity android:name=".Preset" />
         <activity android:name=".Modification" />
