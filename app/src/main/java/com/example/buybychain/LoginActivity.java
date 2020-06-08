@@ -52,6 +52,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Handler Myhandler = new Handler();
     private boolean flag;  // 操作是否成功
     private String type = null;
+    Handler mhandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -185,7 +186,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         call.enqueue(new okhttp3.Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                handler.post(new Runnable() {
+                mhandler.post(new Runnable() {
                     @Override
                     public void run() {
                         Toast.makeText(getApplicationContext(), "post请求失败" ,Toast.LENGTH_LONG).show();

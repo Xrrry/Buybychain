@@ -32,7 +32,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class CommodityDetail extends AppCompatActivity {
-    final Handler handler = new Handler();
+    Handler handler = new Handler();
     private TextView com_name;
     private TextView com_else;
     private TextView producer;
