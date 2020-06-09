@@ -1,16 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProducerHomeFragment">
+    tools:context=".ProducerHomeFragment"
+    android:background="@color/whitesmoke">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/tx1"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="ProducerHomeFragment"
-        android:textSize="15sp"/>
+        android:layout_height="match_parent">
+
+<!--        <androidx.appcompat.widget.SearchView-->
+<!--            android:id="@+id/search"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_marginRight="40dp"-->
+<!--            android:layout_marginLeft="40dp"-->
+<!--            android:layout_marginTop="40dp"-->
+<!--            android:layout_height="40dp"-->
+<!--            app:queryHint="请输入标识码"-->
+<!--            android:background="@drawable/bt_shape" />-->
+
+        <RelativeLayout
+            android:id="@+id/b1All"
+            android:layout_width="130dp"
+            android:layout_height="180dp"
+            android:background="@drawable/home_button_shape"
+            android:layout_marginTop="150dp"
+            android:layout_marginLeft="50dp"
+            android:translationZ="10dp">
+
+            <ImageView
+                android:id="@+id/b1"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/pro2" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="出库/卖出"
+                android:layout_marginTop="100dp"
+                android:layout_marginLeft="20dp"
+                android:textSize="17sp"
+                android:textColor="@color/black"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/b2All"
+            android:layout_width="130dp"
+            android:layout_height="180dp"
+            android:background="@drawable/home_button_shape"
+            android:layout_marginTop="150dp"
+            android:layout_marginRight="50dp"
+            android:layout_alignParentRight="true"
+            android:translationZ="10dp">
+
+            <ImageView
+                android:id="@+id/b2"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/rank" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="商家信誉\n排行榜"
+                android:layout_marginTop="100dp"
+                android:layout_marginLeft="20dp"
+                android:textSize="17sp"
+                android:textColor="@color/black"/>
+        </RelativeLayout>
+
+
+    </RelativeLayout>
 
 </FrameLayout>

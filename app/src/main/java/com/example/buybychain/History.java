@@ -73,21 +73,6 @@ public class History extends AppCompatActivity {
         listview_1 = (ListView) this.findViewById(R.id.Listview_1);
         list = new ArrayList<Map<String, Object>>();
         post("http://buybychain.cn:8888/perHistory",application.getPhone());
-//        map = new HashMap<String, Object>();
-//        map.put("com_name", "小米10 Pro");
-//        map.put("out_id", "12300000");
-//        map.put("time","2020-11-10 11:11:11");
-//        list.add(map);
-//        map = new HashMap<String, Object>();
-//        map.put("com_name", "小米MIX4");
-//        map.put("out_id", "12300001");
-//        map.put("time","2020-11-10 11:11:12");
-//        list.add(map);
-//        String[] form = {"com_name", "out_id", "time"};
-//        int[] to = {R.id.com_name, R.id.out_id, R.id.histime};
-//        adapter = new SimpleAdapter(getApplicationContext(), list, R.layout.hisitem, form, to);
-//        listview_1.setAdapter(adapter);
-
     }
 
     public void post(String url, String cus_acc){
