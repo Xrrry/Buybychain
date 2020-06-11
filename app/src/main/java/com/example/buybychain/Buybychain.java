@@ -2,6 +2,8 @@ package com.example.buybychain;
 
 import android.app.Application;
 import android.util.DisplayMetrics;
+
+import com.bean.Commodity;
 import com.uuzuche.lib_zxing.DisplayUtil;
 
 import lombok.Data;
@@ -10,7 +12,8 @@ import lombok.Data;
 public class Buybychain extends Application {
     private String phone;
     private String type;
-
+    private Commodity commodity;
+    private boolean isValid = false;
 
     @Override
     public void onCreate() {

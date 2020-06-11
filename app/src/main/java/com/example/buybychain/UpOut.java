@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 
+import com.bean.Commodity;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 
@@ -63,19 +64,8 @@ public class UpOut extends AppCompatActivity {
         findViewById(R.id.choose).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        MaterialEditText com_name = findViewById(R.id.com_name);
-                        MaterialEditText com_type = findViewById(R.id.com_type);
-                        MaterialEditText com_locate = findViewById(R.id.com_locate);
-                        MaterialEditText com_price = findViewById(R.id.com_price);
-                        com_name.setText("123");
-                        com_type.setText("1211");
-                        com_locate.setText("11212");
-                        com_price.setText("1321");
-                    }
-                });
+                Intent intent = new Intent(UpOut.this, ChooseCom.class);
+                startActivity(intent);
             }
         });
     }
@@ -130,6 +120,30 @@ public class UpOut extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        System.out.println("onResume");
+        Buybychain application = (Buybychain) getApplication();
+        if(application.isValid()) {
+            application.setValid(false);
+            final Commodity commodity = application.getCommodity();
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    MaterialEditText com_name = findViewById(R.id.com_name);
+                    MaterialEditText com_type = findViewById(R.id.com_type);
+                    MaterialEditText com_locate = findViewById(R.id.com_locate);
+                    MaterialEditText com_price = findViewById(R.id.com_price);
+                    com_name.setText(commodity.getCom_name());
+                    com_type.setText(commodity.getCom_cate());
+                    com_locate.setText(commodity.getCom_place());
+                    com_price.setText(commodity.getCom_price());
+                }
+            });
         }
     }
 }
