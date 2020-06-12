@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <com.rengwuxian.materialedittext.MaterialEditText
-                android:id="@+id/com_id"
+                android:id="@+id/out_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="80dp"

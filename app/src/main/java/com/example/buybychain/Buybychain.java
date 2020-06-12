@@ -21,18 +21,6 @@ public class Buybychain extends Application {
         initDisplayOpinion();
     }
 
-//    public String getPhone() {
-//        return phone;
-//    }
-//    public void setPhone(String phone) {
-//        this.phone = phone;
-//    }
-//    public void setType(String type) {
-//        this.type = type;
-//    }
-//    public String getType() {
-//        return type;
-//    }
     private void initDisplayOpinion() {
         DisplayMetrics dm = getResources().getDisplayMetrics();
         DisplayUtil.density = dm.density;
