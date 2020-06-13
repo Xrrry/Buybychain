@@ -45,6 +45,9 @@ public class ProducerHomeActivity extends AppCompatActivity implements ProducerH
         if (Launcher.instance != null) {
             Launcher.instance.finish();
         }
+        if (HomeActivity.instance != null) {
+            HomeActivity.instance.finish();
+        }
         // 隐藏标题栏
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         // 隐藏状态栏

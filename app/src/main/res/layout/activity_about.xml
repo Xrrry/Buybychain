@@ -4,13 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".About">
-
-    <TextView
+    tools:context=".Launcher"
+    android:background="@color/whitesmoke">
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="关于"
-        android:textSize="100px"/>
+        android:layout_marginTop="100dp"
+        android:layout_centerHorizontal="true">
+        <ImageView
+            android:id="@+id/iv1"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/logo"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/iv1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="30dp"
+            android:text="Version 1.0"
+            android:textSize="20sp"
+            android:textColor="@color/black"/>
+    </RelativeLayout>
 
 </RelativeLayout>

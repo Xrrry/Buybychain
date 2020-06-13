@@ -8,12 +8,14 @@ import androidx.fragment.app.Fragment;
 import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.util.SparseArray;
@@ -22,18 +24,28 @@ import android.view.Window;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.bean.User;
+import com.google.gson.Gson;
 import com.uuzuche.lib_zxing.activity.CaptureActivity;
 import com.uuzuche.lib_zxing.activity.CaptureFragment;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+
+import okhttp3.Call;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class HomeActivity extends AppCompatActivity implements HomeFragment.OnFragmentInteractionListener, MyFragment.OnFragmentInteractionListener {
 
     private RadioGroup mTabRadioGroup;
     private SparseArray<Fragment> mFragmentSparseArray;
     public static HomeActivity instance;
+    Handler mhandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +102,73 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnFr
             // readContacts();
         }
         initView();
+        Buybychain application = (Buybychain) getApplication();
+        SharedPreferences sp = getSharedPreferences("login", getApplicationContext().MODE_PRIVATE);
+        Boolean auth = sp.getBoolean("isInAuth", false);
+        if (auth) {
+            post("http://buybychain.cn:8888/loginSearch",application.getPhone());
+        }
+    }
+
+    public void post(String url, String phone){
+        OkHttpClient client = new OkHttpClient();
+        FormBody body = new FormBody.Builder()
+                .add("phone",phone)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+        Call call = client.newCall(request);
+        call.enqueue(new okhttp3.Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                mhandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getApplicationContext(), "post请求失败" ,Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if(response.isSuccessful()) {
+                    final String body = response.body().string();
+                    if (!body.equals("不存在")) {
+                        Gson gson = new Gson();
+                        User user = gson.fromJson(body,User.class);
+                        String type = user.getUser_type();
+                        if (type.equals("2")||type.equals("3")) {
+                            Buybychain application = (Buybychain) getApplication();
+                            application.setType(type);
+                            mhandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getApplicationContext(), "身份验证成功!已切换用户界面" ,Toast.LENGTH_LONG).show();
+                                }
+                            });
+                            SharedPreferences sp = getSharedPreferences("login", getApplicationContext().MODE_PRIVATE);
+                            sp.edit()
+                                    .putBoolean("isInAuth", false)
+                                    .apply();
+                            Intent intent = new Intent(getApplicationContext(), ProducerHomeActivity.class);
+                            startActivity(intent);
+                            overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+                        }
+                        else {
+                            mhandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getApplicationContext(), "尚未通过" ,Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+        });
     }
 
 

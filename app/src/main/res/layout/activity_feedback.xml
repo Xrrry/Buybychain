@@ -4,13 +4,45 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".Feedback">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="反馈"
-        android:textSize="100px"/>
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical">
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            app:met_baseColor="@color/black"
+            app:met_primaryColor="#048A81"
+            app:met_errorColor="#C63B34"
+            app:met_floatingLabelTextSize="15sp"
+            app:met_floatingLabel="normal"
+            app:met_floatingLabelText="反馈"
+            app:met_iconLeft="@drawable/feedback"
+            android:hint="请提出您的意见或建议" />
+
+        
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/submit"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="100dp"
+        android:text="确     定"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:background="@drawable/bt_shape4"/>
+
 
 </RelativeLayout>

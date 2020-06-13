@@ -4,13 +4,74 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Authentication">
+    tools:context=".Authentication"
+    android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="身份验证"
-        android:textSize="100px"/>
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="选择想要验证的身份"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:layout_marginTop="80dp"/>
+        <RadioGroup
+            android:id="@+id/radiogroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <RadioButton
+                android:id="@+id/radiobutton1"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="厂商" />
+            <RadioButton
+                android:id="@+id/radiobutton2"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="商家" />
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="请填写资质证明,验证身份成为厂商或商家"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:layout_marginTop="30dp"/>
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:met_baseColor="@color/black"
+            app:met_primaryColor="#048A81"
+            app:met_errorColor="#C63B34"
+            app:met_floatingLabelTextSize="15sp"
+            app:met_floatingLabel="none"
+            app:met_iconLeft="@drawable/my2"
+            android:hint="资质证明" />
+
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/submit"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="100dp"
+        android:text="提      交"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:background="@drawable/bt_shape4"/>
 
 </RelativeLayout>

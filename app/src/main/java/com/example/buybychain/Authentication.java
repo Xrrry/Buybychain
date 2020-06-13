@@ -2,16 +2,33 @@ package com.example.buybychain;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.Window;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 public class Authentication extends AppCompatActivity {
+    private String type;
+    private TextView tv;
+    Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,5 +58,73 @@ public class Authentication extends AppCompatActivity {
             }
         }
         setContentView(R.layout.activity_authentication);
+        RadioGroup mRG = findViewById(R.id.radiogroup);
+        tv = findViewById(R.id.content);
+        //设置监听器
+        mRG.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (group.getCheckedRadioButtonId()) {
+                    case R.id.radiobutton1:
+                        type = "1";
+                        break;
+                    case R.id.radiobutton2:
+                        type = "2";
+                        break;
+                }
+            }
+        });
+        findViewById(R.id.submit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Buybychain application = (Buybychain) getApplication();
+                post("http://buybychain.cn:8888/auth",tv.getText().toString(), application.getPhone());
+            }
+        });
+    }
+    public void post(String url, String content,String user_id){
+        OkHttpClient client = new OkHttpClient();
+        FormBody body = new FormBody.Builder()
+                .add("user_id",user_id)
+                .add("type",type)
+                .add("content",content)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+        Call call = client.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getApplicationContext(), "post请求失败" ,Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if(response.isSuccessful()) {
+                    final String body = response.body().string();
+                    System.out.println(body);
+                    if(body.equals("上传成功")) {
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(), "发送申请成功，请等待后台审核" ,Toast.LENGTH_LONG).show();
+                                SharedPreferences sp = getSharedPreferences("login", getApplicationContext().MODE_PRIVATE);
+                                sp.edit()
+                                        .putBoolean("isInAuth", true)
+                                        .apply();
+                            }
+                        });
+                        finish();
+                    }
+                }
+            }
+        });
     }
 }
