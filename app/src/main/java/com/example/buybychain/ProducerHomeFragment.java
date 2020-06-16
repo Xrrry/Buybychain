@@ -24,6 +24,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import static com.mob.tools.utils.DeviceHelper.getApplication;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -82,15 +84,25 @@ public class ProducerHomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_producer_home, container, false);
-
+        final Buybychain application = (Buybychain) getApplication();
         RelativeLayout bt1 = view.findViewById(R.id.b1All);
         bt1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i1 = new Intent(getActivity(), UpOut.class);
-                startActivity(i1);
+                if(Integer.valueOf(application.getType())==2) {
+                    Intent i1 = new Intent(getActivity(), UpOut.class);
+                    startActivity(i1);
+                }
+                else {
+                    Intent i1 = new Intent(getActivity(), UpSell.class);
+                    startActivity(i1);
+                }
             }
         });
+        TextView tv = view.findViewById(R.id.selltext);
+        if(Integer.valueOf(application.getType())==3) {
+            tv.setText("卖出");
+        }
         // Inflate the layout for this fragment
         return view;
     }

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -13,8 +14,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.leon.lib.settingview.LSettingItem;
+
+import static com.mob.tools.utils.DeviceHelper.getApplication;
 
 
 /**
@@ -79,7 +84,13 @@ public class ProducerMyFragment extends Fragment {
         LSettingItem bt3 = view.findViewById(R.id.pro3);
         LSettingItem bt4 = view.findViewById(R.id.pro4);
         LSettingItem bt5 = view.findViewById(R.id.pro5);
-
+        TextView tv = view.findViewById(R.id.shenfen);
+        RelativeLayout rl = view.findViewById(R.id.rela);
+        Buybychain application = (Buybychain) getApplication();
+        if(Integer.valueOf(application.getType())==3) {
+            tv.setText("卖家");
+            rl.setBackgroundColor(Color.parseColor("#262322"));
+        }
         bt1.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
             @Override
             public void click() {

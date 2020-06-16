@@ -11,7 +11,7 @@ import android.view.Window;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-public class Preset extends AppCompatActivity {
+public class UpSell extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +40,6 @@ public class Preset extends AppCompatActivity {
 
             }
         }
-        setContentView(R.layout.activity_preseet);
+        setContentView(R.layout.activity_up_sell);
     }
 }

@@ -9,8 +9,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <RelativeLayout
+            android:id="@+id/rela"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#408A81">
@@ -55,12 +55,13 @@
                     android:textSize="17sp"
                     android:textColor="@color/white"/>
                 <TextView
+                    android:id="@+id/shenfen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/headImage"
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="35dp"
-                    android:text="商家/厂商"
+                    android:text="厂商"
                     android:textColor="@color/white"
                     android:textSize="13sp"/>
             </RelativeLayout>

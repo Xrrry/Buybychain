@@ -2,16 +2,21 @@ package com.example.buybychain;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.bean.Commodity;
 import com.bean.PerAllHistory;
 import com.bean.SearchDetail;
 import com.google.gson.Gson;
@@ -36,10 +41,11 @@ import okhttp3.Response;
 public class History extends AppCompatActivity {
 
     private ListView listview_1;
-    private SimpleAdapter adapter;
+    private MyAdapter adapter;
     private List<Map<String, Object>> list;
     private Map<String, Object> map;
     final Handler handler = new Handler();
+    private String[] ss;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +81,7 @@ public class History extends AppCompatActivity {
         post("http://buybychain.cn:8888/perHistory",application.getPhone());
     }
 
+
     public void post(String url, String cus_acc){
         OkHttpClient client = new OkHttpClient();
         FormBody body = new FormBody.Builder()
@@ -102,7 +109,7 @@ public class History extends AppCompatActivity {
                 if(response.isSuccessful()) {
                     final String body = response.body().string();
                     Gson gson = new Gson();
-                    String[] ss = body.split("Tuple");
+                    ss = body.split("Tuple");
                     SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     for (int i=1;i<ss.length;i++) {
                         String s = ss[i].substring(1);
@@ -119,12 +126,46 @@ public class History extends AppCompatActivity {
                         public void run() {
                             String[] form = {"com_name", "out_id", "time"};
                             int[] to = {R.id.com_name, R.id.out_id, R.id.histime};
-                            adapter = new SimpleAdapter(getApplicationContext(), list, R.layout.hisitem, form, to);
+                            adapter = new MyAdapter(getApplicationContext(), list, R.layout.hisitem, form, to);
                             listview_1.setAdapter(adapter);
                         }
                     });
                 }
             }
         });
+    }
+
+    public class MyAdapter extends SimpleAdapter {
+        //上下文
+        Context context;
+        //private LayoutInflater mInflater;
+
+        public MyAdapter(Context context,
+                         List<? extends Map<String, ?>> data, int resource, String[] from,
+                         int[] to) {
+            super(context, data, resource, from, to);
+            this.context = context;
+            //this.mInflater = LayoutInflater.from(context);
+        }
+
+        @Override
+        public View getView(final int i, View convertView, ViewGroup viewGroup) {
+            View view = super.getView(i, convertView, viewGroup);
+            RelativeLayout item = view.findViewById(R.id.item);
+            item.setTag(i);//设置标签
+            item.setOnClickListener(new android.view.View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int a = (Integer) v.getTag();
+                    String s = ss[a+1].substring(1);
+                    Gson gson = new Gson();
+                    PerAllHistory perAllHistory = gson.fromJson(s,PerAllHistory.class);
+                    Intent intent = new Intent(History.this, CommodityDetail.class);
+                    intent.putExtra("scanResult",perAllHistory.getOut_id());
+                    startActivity(intent);
+                }
+            });
+            return view;
+        }
     }
 }

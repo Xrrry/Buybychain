@@ -38,9 +38,10 @@
                 android:layout_marginLeft="20dp"
                 android:src="@drawable/pro2" />
             <TextView
+                android:id="@+id/selltext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="出库/卖出"
+                android:text="出库"
                 android:layout_marginTop="100dp"
                 android:layout_marginLeft="20dp"
                 android:textSize="17sp"
