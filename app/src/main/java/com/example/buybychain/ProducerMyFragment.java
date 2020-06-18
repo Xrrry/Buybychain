@@ -85,6 +85,7 @@ public class ProducerMyFragment extends Fragment {
         LSettingItem bt3 = view.findViewById(R.id.pro3);
         LSettingItem bt4 = view.findViewById(R.id.pro4);
         LSettingItem bt5 = view.findViewById(R.id.pro5);
+        TextView tv2 = (TextView) bt3.findViewById(R.id.tv_lefttext);
         TextView tv = view.findViewById(R.id.shenfen);
         RelativeLayout rl = view.findViewById(R.id.rela);
         Buybychain application = (Buybychain) getApplication();
@@ -105,7 +106,7 @@ public class ProducerMyFragment extends Fragment {
         bt3.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
             @Override
             public void click() {
-                Intent intent = new Intent(getActivity(), UploadHistory.class);
+                Intent intent = new Intent(getActivity(), SellHistory.class);
                 startActivity(intent);
             }
         });
@@ -128,6 +129,7 @@ public class ProducerMyFragment extends Fragment {
             rl.setBackgroundColor(Color.parseColor("#262322"));
             LinearLayout ll = view.findViewById(R.id.lin);
             ll.removeView(bt2);
+            tv2.setText("卖出记录");
         }
         signout = view.findViewById(R.id.signout);
         signout.setOnClickListener(new View.OnClickListener() {

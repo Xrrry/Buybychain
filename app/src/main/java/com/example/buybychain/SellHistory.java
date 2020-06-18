@@ -11,7 +11,7 @@ import android.view.Window;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-public class UploadHistory extends AppCompatActivity {
+public class SellHistory extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +40,6 @@ public class UploadHistory extends AppCompatActivity {
 
             }
         }
-        setContentView(R.layout.activity_upload_history);
+        setContentView(R.layout.activity_sell_history);
     }
 }

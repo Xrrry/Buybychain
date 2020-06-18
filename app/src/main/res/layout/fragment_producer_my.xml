@@ -105,7 +105,7 @@
                     android:layout_marginTop="10dp"
                     app:isShowUnderLine="false"
                     app:leftIcon="@drawable/pro2"
-                    app:leftText="上传记录" />
+                    app:leftText="出库记录" />
                 <com.leon.lib.settingview.LSettingItem
                     android:id="@+id/pro4"
                     android:layout_width="match_parent"
