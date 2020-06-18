@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -87,10 +88,6 @@ public class ProducerMyFragment extends Fragment {
         TextView tv = view.findViewById(R.id.shenfen);
         RelativeLayout rl = view.findViewById(R.id.rela);
         Buybychain application = (Buybychain) getApplication();
-        if(Integer.valueOf(application.getType())==3) {
-            tv.setText("卖家");
-            rl.setBackgroundColor(Color.parseColor("#262322"));
-        }
         bt1.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
             @Override
             public void click() {
@@ -126,6 +123,12 @@ public class ProducerMyFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        if(Integer.valueOf(application.getType())==3) {
+            tv.setText("卖家");
+            rl.setBackgroundColor(Color.parseColor("#262322"));
+            LinearLayout ll = view.findViewById(R.id.lin);
+            ll.removeView(bt2);
+        }
         signout = view.findViewById(R.id.signout);
         signout.setOnClickListener(new View.OnClickListener() {
             @Override

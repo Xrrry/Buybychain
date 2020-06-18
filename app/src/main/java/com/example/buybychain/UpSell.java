@@ -54,6 +54,7 @@ public class UpSell extends AppCompatActivity {
             }
         }
         setContentView(R.layout.activity_up_sell);
+
         findViewById(R.id.submit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
