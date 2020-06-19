@@ -103,13 +103,6 @@ public class ProducerMyFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        bt3.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
-            @Override
-            public void click() {
-                Intent intent = new Intent(getActivity(), SellHistory.class);
-                startActivity(intent);
-            }
-        });
         bt4.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
             @Override
             public void click() {
@@ -130,6 +123,22 @@ public class ProducerMyFragment extends Fragment {
             LinearLayout ll = view.findViewById(R.id.lin);
             ll.removeView(bt2);
             tv2.setText("卖出记录");
+            bt3.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
+                @Override
+                public void click() {
+                    Intent intent = new Intent(getActivity(), SellHistory.class);
+                    startActivity(intent);
+                }
+            });
+        }
+        else {
+            bt3.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
+                @Override
+                public void click() {
+                    Intent intent = new Intent(getActivity(), OutHistory.class);
+                    startActivity(intent);
+                }
+            });
         }
         signout = view.findViewById(R.id.signout);
         signout.setOnClickListener(new View.OnClickListener() {
