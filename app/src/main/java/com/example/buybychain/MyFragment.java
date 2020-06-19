@@ -13,9 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.leon.lib.settingview.LSettingItem;
+
 
 
 /**
@@ -75,6 +77,9 @@ public class MyFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_my, container, false);
+        Buybychain application = (Buybychain) getActivity().getApplication();
+        TextView ntv = view.findViewById(R.id.name);
+        ntv.setText(application.getName());
         LSettingItem bt1 = view.findViewById(R.id.my1);
         LSettingItem bt2 = view.findViewById(R.id.my2);
         LSettingItem bt3 = view.findViewById(R.id.my3);

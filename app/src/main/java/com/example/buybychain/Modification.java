@@ -7,9 +7,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.TextView;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+
+import static com.mob.tools.utils.DeviceHelper.getApplication;
 
 public class Modification extends AppCompatActivity {
 
@@ -41,5 +44,8 @@ public class Modification extends AppCompatActivity {
             }
         }
         setContentView(R.layout.activity_modification);
+        Buybychain application = (Buybychain) getApplication();
+        TextView ntv = findViewById(R.id.nickname);
+        ntv.setHint(application.getName());
     }
 }

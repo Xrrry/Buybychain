@@ -6,11 +6,36 @@
     android:layout_height="match_parent"
     tools:context=".Modification">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="修改个人信息"
-        android:textSize="100px"/>
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
+        android:orientation="vertical">
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/nickname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:layout_weight="30"
+            app:met_baseColor="@color/black"
+            app:met_primaryColor="#048A81"
+            app:met_errorColor="#C63B34"
+            app:met_floatingLabel="none"
+            android:hint="name"
+            app:met_iconLeft="@drawable/my2"/>
+
+    </LinearLayout>
+    <Button
+        android:id="@+id/submit"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="70dp"
+        android:text="确    认"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:background="@drawable/bt_shape4"/>
 
 </RelativeLayout>

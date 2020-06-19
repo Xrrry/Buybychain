@@ -68,19 +68,18 @@
             app:met_iconLeft="@drawable/my4"
             android:hint="物流单号" />
 
-
-        <Button
-            android:id="@+id/submit"
-            android:layout_width="250dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="250dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="30dp"
-            android:text="提   交"
-            android:textSize="18sp"
-            android:textColor="@color/white"
-            android:background="@drawable/bt_shape4"/>
-
     </LinearLayout>
+
+    <Button
+        android:id="@+id/submit"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="70dp"
+        android:text="提   交"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:background="@drawable/bt_shape4"/>
 
 </RelativeLayout>

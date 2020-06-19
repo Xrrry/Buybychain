@@ -20,9 +20,6 @@ import android.widget.TextView;
 
 import com.leon.lib.settingview.LSettingItem;
 
-import static com.mob.tools.utils.DeviceHelper.getApplication;
-
-
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -88,7 +85,7 @@ public class ProducerMyFragment extends Fragment {
         TextView tv2 = (TextView) bt3.findViewById(R.id.tv_lefttext);
         TextView tv = view.findViewById(R.id.shenfen);
         RelativeLayout rl = view.findViewById(R.id.rela);
-        Buybychain application = (Buybychain) getApplication();
+        Buybychain application = (Buybychain) getActivity().getApplication();
         bt1.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
             @Override
             public void click() {

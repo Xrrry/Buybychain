@@ -24,7 +24,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import static com.mob.tools.utils.DeviceHelper.getApplication;
 
 
 /**
@@ -84,7 +83,7 @@ public class ProducerHomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_producer_home, container, false);
-        final Buybychain application = (Buybychain) getApplication();
+        final Buybychain application = (Buybychain) getActivity().getApplication();
         RelativeLayout bt1 = view.findViewById(R.id.b1All);
         bt1.setOnClickListener(new View.OnClickListener() {
             @Override
