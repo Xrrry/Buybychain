@@ -14,6 +14,7 @@ public class Buybychain extends Application {
     private String type;
     private Commodity commodity;
     private boolean isValid = false;
+    private boolean isChange = false;
     private String name;
 
     @Override

@@ -21,7 +21,9 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.Window;
+import android.widget.FrameLayout;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bean.User;
@@ -192,7 +194,7 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnFr
                         break;
                 }
             }
-        });
+    });
         // 默认显示第一个
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container,
                 mFragmentSparseArray.get(R.id.home_tab)).commit();
@@ -258,4 +260,5 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnFr
     public void onFragmentInteraction(Uri uri) {
 
     }
+
 }

@@ -32,7 +32,7 @@
         android:layout_height="50dp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="70dp"
+        android:layout_marginBottom="100dp"
         android:text="确    认"
         android:textSize="18sp"
         android:textColor="@color/white"

@@ -54,7 +54,7 @@ public class Launcher extends AppCompatActivity {
             Buybychain application = (Buybychain) getApplication();
             application.setPhone(phone);
             application.setType("1");
-            application.setName("Xrr");
+            application.setName("Zzz");
             if(application.getType().equals("1")) {
                 timer.schedule(task1,1000);
             }

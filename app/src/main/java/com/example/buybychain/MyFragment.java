@@ -38,6 +38,7 @@ public class MyFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private ImageView signout;
+    private TextView ntv;
 
     private OnFragmentInteractionListener mListener;
 
@@ -78,7 +79,7 @@ public class MyFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_my, container, false);
         Buybychain application = (Buybychain) getActivity().getApplication();
-        TextView ntv = view.findViewById(R.id.name);
+        ntv = view.findViewById(R.id.name);
         ntv.setText(application.getName());
         LSettingItem bt1 = view.findViewById(R.id.my1);
         LSettingItem bt2 = view.findViewById(R.id.my2);
@@ -160,6 +161,17 @@ public class MyFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Buybychain application = (Buybychain) getActivity().getApplication();
+        if(application.isChange()) {
+            application.setChange(false);
+            ntv.setText(application.getName());
+        }
+    }
+
 
     /**
      * This interface must be implemented by activities that contain this
