@@ -99,19 +99,19 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         search = (SearchView) view.findViewById(R.id.search);
         bt1 = view.findViewById(R.id.b1All);
-//        bt1.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent i1 = new Intent(getActivity(), CommodityDetail.class);
-//                startActivity(i1);
-//            }
-//        });
+        bt1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i1 = new Intent(getActivity(), RankList.class);
+                startActivity(i1);
+            }
+        });
         bt2 = view.findViewById(R.id.b2All);
         bt2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i1 = new Intent(getActivity(), History.class);
-                startActivity(i1);
+                Intent i2 = new Intent(getActivity(), History.class);
+                startActivity(i2);
             }
         });
         search.setIconifiedByDefault(false);

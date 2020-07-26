@@ -98,6 +98,14 @@ public class ProducerHomeFragment extends Fragment {
                 }
             }
         });
+        RelativeLayout bt2 = view.findViewById(R.id.b2All);
+        bt2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i1 = new Intent(getActivity(), RankList.class);
+                startActivity(i1);
+            }
+        });
         TextView tv = view.findViewById(R.id.selltext);
         if(Integer.valueOf(application.getType())==3) {
             tv.setText("卖出");

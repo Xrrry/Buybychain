@@ -55,7 +55,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginTop="5dp"
-                android:src="@drawable/ling"
+                android:src="@drawable/point"
                 android:visibility="invisible"/>
             <TextView
                 android:id="@+id/produser"
@@ -74,7 +74,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginTop="5dp"
-                android:src="@drawable/ling"
+                android:src="@drawable/point"
                 android:visibility="invisible"/>
             <TextView
                 android:id="@+id/saler"
@@ -111,7 +111,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginTop="5dp"
-                android:src="@drawable/ling"
+                android:src="@drawable/point"
                 android:visibility="invisible"/>
             <TextView
                 android:id="@+id/customer"
