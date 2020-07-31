@@ -10,9 +10,11 @@ import android.os.Handler;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bean.HisSell;
 import com.bean.SearchDetail;
 import com.google.gson.Gson;
 
@@ -20,7 +22,9 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -109,6 +113,11 @@ public class CommodityDetail extends AppCompatActivity {
                     final String body = response.body().string();
                     Gson gson = new Gson();
                     final SearchDetail searchDetail = gson.fromJson(body,SearchDetail.class);
+                    String his = searchDetail.getAll_his_sell();
+                    HisSell hisSell = gson.fromJson(his, HisSell.class);
+                    System.out.println(hisSell.toString());
+                    System.out.println(hisSell.getHisSellList().get(0));
+                    System.out.println(searchDetail.toString());
                     final Long timeStamp = System.currentTimeMillis();  //获取当前时间戳
                     final SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     final String sd = sdf.format(new Date(Long.parseLong(String.valueOf(timeStamp))));
@@ -122,7 +131,7 @@ public class CommodityDetail extends AppCompatActivity {
                             producer.setText(outTime + "\n生产商：" + searchDetail.getPro_nickname() + "\n出厂");
                             String sellTime = sdf.format(new Date(Long.valueOf(searchDetail.getSell_time() + "000")));
                             saler.setText(sellTime + "\n销售商：" + searchDetail.getSal_nickname() + "\n售出");
-                            customer.setText(sd + "\n买家：" + searchDetail.getSell_cus_acc() + "\n查询");
+                            customer.setText(sd + "\n买家：" + searchDetail.getCus_nickname() + "\n查询");
                             im1.setVisibility(View.VISIBLE);
                             im2.setVisibility(View.VISIBLE);
                             im3.setVisibility(View.VISIBLE);

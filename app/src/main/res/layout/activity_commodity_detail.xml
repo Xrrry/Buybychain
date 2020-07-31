@@ -52,11 +52,11 @@
             android:layout_height="wrap_content">
             <ImageView
                 android:id="@+id/image1"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginTop="5dp"
-                android:src="@drawable/point"
-                android:visibility="invisible"/>
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_marginTop="25dp"
+                android:visibility="invisible"
+                android:src="@drawable/pro"/>
             <TextView
                 android:id="@+id/produser"
                 android:layout_width="wrap_content"
@@ -71,11 +71,11 @@
             android:layout_marginTop="50dp">
             <ImageView
                 android:id="@+id/image2"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginTop="5dp"
-                android:src="@drawable/point"
-                android:visibility="invisible"/>
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_marginTop="25dp"
+                android:visibility="invisible"
+                android:src="@drawable/sal"/>
             <TextView
                 android:id="@+id/saler"
                 android:layout_width="wrap_content"
@@ -108,11 +108,11 @@
             android:layout_marginTop="50dp">
             <ImageView
                 android:id="@+id/image3"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginTop="5dp"
-                android:src="@drawable/point"
-                android:visibility="invisible"/>
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_marginTop="25dp"
+                android:visibility="invisible"
+                android:src="@drawable/cus"/>
             <TextView
                 android:id="@+id/customer"
                 android:layout_width="wrap_content"

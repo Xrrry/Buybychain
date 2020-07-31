@@ -20,13 +20,14 @@ public class SearchDetail {
     private String com_price; //商品价格
     private String com_place; //产品产地
     private Integer all_sell_count; //所有卖出次数
-    private List<String> all_sell_time; //所有卖出时间
+    private String all_his_sell; //所有卖出记录
     //以下先只传最后一次的信息
     private String sell_id; //卖出信息id
     private String sell_sal_acc; //卖家id
     private String sal_nickname; //卖家昵称
-    private String sal_cred; //卖家平均信誉
+    private String sal_cred; //卖家平均信誉分
     private String sal_cnt; //卖家评价人数
+    private String sal_total; //卖家评价总分
     private String sell_time; //卖出时间
     private String sell_cus_acc; //买家id
     private String cus_nickname; //买家昵称
