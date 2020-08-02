@@ -7,6 +7,6 @@ import lombok.ToString;
 
 @Data
 @ToString
-public class HisSell {
-    private List<HisSellitem> hisSellList;
+public class HisQuery {
+    private List<HisQueryitem> hisQueryList;
 }

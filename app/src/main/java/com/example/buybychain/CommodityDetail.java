@@ -14,7 +14,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bean.HisQuery;
+import com.bean.HisQueryitem;
 import com.bean.HisSell;
+import com.bean.HisSellitem;
 import com.bean.SearchDetail;
 import com.google.gson.Gson;
 
@@ -113,11 +116,17 @@ public class CommodityDetail extends AppCompatActivity {
                     final String body = response.body().string();
                     Gson gson = new Gson();
                     final SearchDetail searchDetail = gson.fromJson(body,SearchDetail.class);
-                    String his = searchDetail.getAll_his_sell();
-                    HisSell hisSell = gson.fromJson(his, HisSell.class);
-                    System.out.println(hisSell.toString());
-                    System.out.println(hisSell.getHisSellList().get(0));
                     System.out.println(searchDetail.toString());
+                    String his1 = searchDetail.getAll_his_sell();
+                    HisSell hisSell = gson.fromJson(his1, HisSell.class);
+                    final HisSellitem hisSellitem = hisSell.getHisSellList().get(hisSell.getHisSellList().size()-1);
+//                    System.out.println(hisSell.toString());
+//                    System.out.println(hisSellitem.toString());
+                    String his2 = searchDetail.getAll_his_query();
+                    HisQuery hisQuery = gson.fromJson(his2, HisQuery.class);
+                    HisQueryitem hisQueryitem = hisQuery.getHisQueryList().get(hisQuery.getHisQueryList().size()-1);
+                    System.out.println(hisQuery.toString());
+                    System.out.println(hisQueryitem.toString());
                     final Long timeStamp = System.currentTimeMillis();  //获取当前时间戳
                     final SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     final String sd = sdf.format(new Date(Long.parseLong(String.valueOf(timeStamp))));
@@ -129,9 +138,9 @@ public class CommodityDetail extends AppCompatActivity {
                                     "  类别：" + searchDetail.getCom_cate() + "  产地：" + searchDetail.getCom_place());
                             String outTime = sdf.format(new Date(Long.valueOf(searchDetail.getOut_birthday() + "000")));
                             producer.setText(outTime + "\n生产商：" + searchDetail.getPro_nickname() + "\n出厂");
-                            String sellTime = sdf.format(new Date(Long.valueOf(searchDetail.getSell_time() + "000")));
-                            saler.setText(sellTime + "\n销售商：" + searchDetail.getSal_nickname() + "\n售出");
-                            customer.setText(sd + "\n买家：" + searchDetail.getCus_nickname() + "\n查询");
+                            String sellTime = sdf.format(new Date(Long.valueOf(hisSellitem.getSell_time() + "000")));
+                            saler.setText(sellTime + "\n销售商：" + hisSellitem.getSell_nickname() + "\n售出");
+                            customer.setText(sd + "\n买家：" + hisSellitem.getCus_nickname() + "\n查询");
                             im1.setVisibility(View.VISIBLE);
                             im2.setVisibility(View.VISIBLE);
                             im3.setVisibility(View.VISIBLE);
