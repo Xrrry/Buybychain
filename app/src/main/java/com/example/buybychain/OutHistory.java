@@ -154,11 +154,6 @@ public class OutHistory extends AppCompatActivity {
                     int a = (Integer) v.getTag();
                     String s = ss[a+1].substring(1);
                     System.out.println(s);
-//                    Gson gson = new Gson();
-//                    PerAllHistory perAllHistory = gson.fromJson(s,PerAllHistory.class);
-//                    Intent intent = new Intent(SellHistory.this, CommodityDetail.class);
-//                    intent.putExtra("scanResult",perAllHistory.getOut_id());
-//                    startActivity(intent);
                 }
             });
             return view;

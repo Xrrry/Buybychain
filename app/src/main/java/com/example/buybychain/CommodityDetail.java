@@ -2,15 +2,20 @@ package com.example.buybychain;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +23,7 @@ import com.bean.HisQuery;
 import com.bean.HisQueryitem;
 import com.bean.HisSell;
 import com.bean.HisSellitem;
+import com.bean.PerAllHistory;
 import com.bean.SearchDetail;
 import com.google.gson.Gson;
 
@@ -27,7 +33,9 @@ import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -40,12 +48,15 @@ import okhttp3.Response;
 
 public class CommodityDetail extends AppCompatActivity {
     Handler handler = new Handler();
-    private TextView com_name;
-    private TextView com_else;
-    private TextView producer;
-    private TextView saler;
-    private TextView customer;
-    private ImageView im1,im2,im3;
+    private ListView listview_1, listview_2;
+    private MyAdapter adapter1, adapter2;
+    private TextView com_name, com_price, com_type, com_place;
+    private TextView pro_time, pro_acc, pro_name;
+    private TextView cus_time, cus_acc, cus_name;
+    private ImageView im1,im2,im3,im4;
+    private List<Map<String, Object>> hisselllist;
+    private List<Map<String, Object>> hisquerylist;
+    private Map<String, Object> map;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,13 +87,23 @@ public class CommodityDetail extends AppCompatActivity {
         }
         setContentView(R.layout.activity_commodity_detail);
         com_name = findViewById(R.id.com_name);
-        com_else = findViewById(R.id.com_else);
-        producer = findViewById(R.id.produser);
-        saler = findViewById(R.id.saler);
-        customer = findViewById(R.id.customer);
+        com_price = findViewById(R.id.com_price);
+        com_type = findViewById(R.id.com_type);
+        com_place = findViewById(R.id.com_place);
+        pro_time = findViewById(R.id.pro_time);
+        pro_acc = findViewById(R.id.pro_acc);
+        pro_name = findViewById(R.id.pro_name);
+        cus_time = findViewById(R.id.cus_time);
+        cus_acc = findViewById(R.id.cus_acc);
+        cus_name = findViewById(R.id.cus_name);
         im1 = findViewById(R.id.image1);
         im2 = findViewById(R.id.image2);
         im3 = findViewById(R.id.image3);
+        im4 = findViewById(R.id.image4);
+        listview_1 = (ListView) this.findViewById(R.id.hissell);
+        listview_2 = (ListView) this.findViewById(R.id.hisquery);
+        hisselllist = new ArrayList<Map<String, Object>>();
+        hisquerylist = new ArrayList<Map<String, Object>>();
         String scanResult = getIntent().getStringExtra("scanResult");
         post("http://buybychain.cn:8888/query",scanResult);
 
@@ -119,35 +140,90 @@ public class CommodityDetail extends AppCompatActivity {
                     System.out.println(searchDetail.toString());
                     String his1 = searchDetail.getAll_his_sell();
                     HisSell hisSell = gson.fromJson(his1, HisSell.class);
+                    List<HisSellitem> hisSellList = hisSell.getHisSellList();
+                    System.out.println(hisSellList.toString());
                     final HisSellitem hisSellitem = hisSell.getHisSellList().get(hisSell.getHisSellList().size()-1);
-//                    System.out.println(hisSell.toString());
-//                    System.out.println(hisSellitem.toString());
                     String his2 = searchDetail.getAll_his_query();
                     HisQuery hisQuery = gson.fromJson(his2, HisQuery.class);
-                    HisQueryitem hisQueryitem = hisQuery.getHisQueryList().get(hisQuery.getHisQueryList().size()-1);
-                    System.out.println(hisQuery.toString());
-                    System.out.println(hisQueryitem.toString());
+                    List<HisQueryitem> hisQueryList = hisQuery.getHisQueryList();
+//                    HisQueryitem hisQueryitem = hisQuery.getHisQueryList().get(hisQuery.getHisQueryList().size()-1);
+                    System.out.println(hisQueryList.toString());
                     final Long timeStamp = System.currentTimeMillis();  //获取当前时间戳
                     final SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     final String sd = sdf.format(new Date(Long.parseLong(String.valueOf(timeStamp))));
+                    for (HisSellitem s : hisSellList) {
+                        map = new HashMap<String, Object>();
+                        map.put("time", sdf.format(new Date(Long.valueOf(s.getSell_time() + "000"))));
+                        map.put("track", "快递单号: " + s.getSell_track_num());
+                        map.put("saler", s.getSell_nickname());
+                        map.put("customer", s.getCus_nickname());
+                        hisselllist.add(map);
+                    }
+                    for (HisQueryitem s : hisQueryList) {
+                        map = new HashMap<String, Object>();
+                        map.put("time", sdf.format(new Date(Long.valueOf(s.getHis_time() + "000"))));
+                        map.put("cus_acc", phoneTrans(s.getHis_cus_acc()));
+                        hisquerylist.add(map);
+                    }
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
                             com_name.setText(searchDetail.getCom_name());
-                            com_else.setText("价格：¥" + searchDetail.getCom_price() +
-                                    "  类别：" + searchDetail.getCom_cate() + "  产地：" + searchDetail.getCom_place());
+                            com_price.setText("价格：¥" + searchDetail.getCom_price());
+                            com_type.setText("类别：" + searchDetail.getCom_cate());
+                            com_place.setText("产地：" + searchDetail.getCom_place());
                             String outTime = sdf.format(new Date(Long.valueOf(searchDetail.getOut_birthday() + "000")));
-                            producer.setText(outTime + "\n生产商：" + searchDetail.getPro_nickname() + "\n出厂");
-                            String sellTime = sdf.format(new Date(Long.valueOf(hisSellitem.getSell_time() + "000")));
-                            saler.setText(sellTime + "\n销售商：" + hisSellitem.getSell_nickname() + "\n售出");
-                            customer.setText(sd + "\n买家：" + hisSellitem.getCus_nickname() + "\n查询");
+                            pro_time.setText(outTime);
+                            pro_acc.setText(phoneTrans(searchDetail.getPro_acc()));
+                            pro_name.setText(searchDetail.getPro_nickname());
+                            cus_time.setText(sd);
+                            cus_acc.setText(phoneTrans(hisSellitem.getSell_cus_acc()));
+                            cus_name.setText(hisSellitem.getCus_nickname());
+                            String[] form1 = {"time", "track", "saler", "customer"};
+                            int[] to1 = {R.id.time, R.id.track, R.id.saler, R.id.customer};
+                            adapter1 = new MyAdapter(getApplicationContext(), hisselllist, R.layout.hissellitem, form1, to1);
+                            listview_1.setAdapter(adapter1);
+                            String[] form2 = {"time", "cus_acc"};
+                            int[] to2 = {R.id.time, R.id.cus_acc};
+                            adapter2 = new MyAdapter(getApplicationContext(), hisquerylist, R.layout.hisqueryitem, form2, to2);
+                            listview_2.setAdapter(adapter2);
                             im1.setVisibility(View.VISIBLE);
                             im2.setVisibility(View.VISIBLE);
                             im3.setVisibility(View.VISIBLE);
+                            im4.setVisibility(View.VISIBLE);
                         }
                     });
                 }
             }
         });
+    }
+    public String phoneTrans(String s) {
+        return s.substring(0,3) + "****" + s.substring(7,11);
+    }
+    public class MyAdapter extends SimpleAdapter {
+        //上下文
+        Context context;
+        //private LayoutInflater mInflater;
+
+        public MyAdapter(Context context,
+                         List<? extends Map<String, ?>> data, int resource, String[] from,
+                         int[] to) {
+            super(context, data, resource, from, to);
+            this.context = context;
+            //this.mInflater = LayoutInflater.from(context);
+        }
+
+        @Override
+        public View getView(final int i, View convertView, ViewGroup viewGroup) {
+            View view = super.getView(i, convertView, viewGroup);
+            LinearLayout item = view.findViewById(R.id.item);
+            item.setTag(i);//设置标签
+            item.setOnClickListener(new android.view.View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                }
+            });
+            return view;
+        }
     }
 }
