@@ -8,20 +8,41 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginTop="5dp">
-        <TextView
-            android:id="@+id/time"
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/time"/>
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_gravity="center_vertical"
+                android:textSize="15sp"
+                android:text="2020-08-03 10:00:00"
+                android:textColor="@color/black"/>
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:text="2020-08-03 10:00:00"
-            android:textColor="@color/black"/>
-        <TextView
-            android:id="@+id/cus_acc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="18337295718"
-            android:textColor="@color/black"/>
+            android:layout_marginTop="5dp">
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/person"/>
+            <TextView
+                android:id="@+id/cus_acc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_gravity="center_vertical"
+                android:textSize="15sp"
+                android:text="18337295718"
+                android:textColor="@color/black"/>
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

@@ -4,13 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="70dp">
 
+    <ImageView
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="20dp"
+        android:src="@drawable/salerhead"
+        android:layout_centerVertical="true"/>
+
     <TextView
         android:id="@+id/sal_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginStart="20dp"
-        android:textSize="25sp"
+        android:layout_marginStart="60dp"
+        android:textSize="20sp"
         android:text="小米旗舰店"
         android:textColor="@color/black"/>
 

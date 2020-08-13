@@ -51,9 +51,9 @@ public class CommodityDetail extends AppCompatActivity {
     private ListView listview_1, listview_2;
     private MyAdapter adapter1, adapter2;
     private TextView com_name, com_price, com_type, com_place;
-    private TextView pro_time, pro_acc, pro_name;
-    private TextView cus_time, cus_acc, cus_name;
-    private ImageView im1,im2,im3,im4;
+    private TextView pro_time, pro_acc;
+    private TextView cus_time, cus_acc;
+    private LinearLayout all;
     private List<Map<String, Object>> hisselllist;
     private List<Map<String, Object>> hisquerylist;
     private Map<String, Object> map;
@@ -92,14 +92,9 @@ public class CommodityDetail extends AppCompatActivity {
         com_place = findViewById(R.id.com_place);
         pro_time = findViewById(R.id.pro_time);
         pro_acc = findViewById(R.id.pro_acc);
-        pro_name = findViewById(R.id.pro_name);
         cus_time = findViewById(R.id.cus_time);
         cus_acc = findViewById(R.id.cus_acc);
-        cus_name = findViewById(R.id.cus_name);
-        im1 = findViewById(R.id.image1);
-        im2 = findViewById(R.id.image2);
-        im3 = findViewById(R.id.image3);
-        im4 = findViewById(R.id.image4);
+        all = findViewById(R.id.pageall);
         listview_1 = (ListView) this.findViewById(R.id.hissell);
         listview_2 = (ListView) this.findViewById(R.id.hisquery);
         hisselllist = new ArrayList<Map<String, Object>>();
@@ -156,7 +151,7 @@ public class CommodityDetail extends AppCompatActivity {
                         map.put("time", sdf.format(new Date(Long.valueOf(s.getSell_time() + "000"))));
                         map.put("track", "快递单号: " + s.getSell_track_num());
                         map.put("saler", s.getSell_nickname());
-                        map.put("customer", s.getCus_nickname());
+                        map.put("customer", s.getCus_nickname() + " (" + phoneTrans(s.getSell_cus_acc()) + ")");
                         hisselllist.add(map);
                     }
                     for (HisQueryitem s : hisQueryList) {
@@ -174,11 +169,9 @@ public class CommodityDetail extends AppCompatActivity {
                             com_place.setText("产地：" + searchDetail.getCom_place());
                             String outTime = sdf.format(new Date(Long.valueOf(searchDetail.getOut_birthday() + "000")));
                             pro_time.setText(outTime);
-                            pro_acc.setText(phoneTrans(searchDetail.getPro_acc()));
-                            pro_name.setText(searchDetail.getPro_nickname());
+                            pro_acc.setText(searchDetail.getPro_nickname() + " (" + phoneTrans(searchDetail.getPro_acc()) + ")");
                             cus_time.setText(sd);
-                            cus_acc.setText(phoneTrans(hisSellitem.getSell_cus_acc()));
-                            cus_name.setText(hisSellitem.getCus_nickname());
+                            cus_acc.setText(hisSellitem.getCus_nickname() + " (" + phoneTrans(hisSellitem.getSell_cus_acc()) + ")");
                             String[] form1 = {"time", "track", "saler", "customer"};
                             int[] to1 = {R.id.time, R.id.track, R.id.saler, R.id.customer};
                             adapter1 = new MyAdapter(getApplicationContext(), hisselllist, R.layout.hissellitem, form1, to1);
@@ -187,10 +180,7 @@ public class CommodityDetail extends AppCompatActivity {
                             int[] to2 = {R.id.time, R.id.cus_acc};
                             adapter2 = new MyAdapter(getApplicationContext(), hisquerylist, R.layout.hisqueryitem, form2, to2);
                             listview_2.setAdapter(adapter2);
-                            im1.setVisibility(View.VISIBLE);
-                            im2.setVisibility(View.VISIBLE);
-                            im3.setVisibility(View.VISIBLE);
-                            im4.setVisibility(View.VISIBLE);
+                            all.setVisibility(View.VISIBLE);
                         }
                     });
                 }

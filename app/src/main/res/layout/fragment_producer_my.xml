@@ -38,19 +38,22 @@
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="580dp"
                 android:layout_marginLeft="30dp">
-                <com.makeramen.roundedimageview.RoundedImageView
+<!--                <com.makeramen.roundedimageview.RoundedImageView-->
+<!--                    android:id="@+id/headImage"-->
+<!--                    android:layout_width="70dp"-->
+<!--                    android:layout_height="70dp"-->
+<!--                    app:riv_oval="true"-->
+<!--                    android:src="@drawable/head"/>-->
+                <ImageView
                     android:id="@+id/headImage"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-
-                    app:riv_oval="true"
-                    android:src="@drawable/head"/>
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/myhead"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/headImage"
                     android:layout_marginLeft="15dp"
-                    android:layout_marginTop="5dp"
                     android:text="18337295718"
                     android:textSize="17sp"
                     android:textColor="@color/white"/>
@@ -60,7 +63,7 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/headImage"
                     android:layout_marginLeft="15dp"
-                    android:layout_marginTop="35dp"
+                    android:layout_marginTop="30dp"
                     android:text="厂商"
                     android:textColor="@color/white"
                     android:textSize="13sp"/>
