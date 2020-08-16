@@ -40,6 +40,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import java.util.Base64;
+import java.io.UnsupportedEncodingException;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     public static LoginActivity instance;
@@ -53,6 +55,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private boolean flag;  // 操作是否成功
     private String type = null;
     Handler mhandler = new Handler();
+    private Boolean isNew = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,7 +136,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         phoneNumber = etPhoneNumber.getText().toString();
                         SMSSDK.getVerificationCode("86", phoneNumber); // 发送验证码给号码的 phoneNumber 的手机
                         etVerificationCode.requestFocus();
-                        post("http://buybychain.cn:8888/loginSearch",phoneNumber);
+                        post1("http://buybychain.cn:8888/loginSearch",phoneNumber);
                         Myhandler.post(new Runnable() {
                             @Override
                             public void run() {
@@ -172,7 +175,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    public void post(String url, String phone){
+    public void post1(String url, String phone){
         OkHttpClient client = new OkHttpClient();
         FormBody body = new FormBody.Builder()
                 .add("phone",phone)
@@ -204,6 +207,53 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         type = user.getUser_type();
                         System.out.println(type);
                     }
+                    else {
+                        isNew = true;
+                    }
+                }
+            }
+        });
+    }
+
+    public void post2(String acc, String name, String url){
+        OkHttpClient client = new OkHttpClient();
+        FormBody body = new FormBody.Builder()
+                .add("acc", acc)
+                .add("name", name)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+        Call call = client.newCall(request);
+        call.enqueue(new okhttp3.Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                mhandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getApplicationContext(), "post请求失败" ,Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if(response.isSuccessful()) {
+                    final String body = response.body().string();
+                    System.out.println(body);
+                    if (body.equals("上传成功")) {
+                        mhandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(), "新用户注册成功", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                                startActivity(intent);
+                                overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+                            }
+                        });
+                    }
                 }
             }
         });
@@ -231,23 +281,36 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     sp.edit()
                             .putString("phone", phone)
                             .apply();
-                    if(type.equals("1")) {
-                        Toast.makeText(getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                        startActivity(intent);
-                        overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
-                    }
-                    else if (type.equals("2")&&type.equals("3")){
-                        Toast.makeText(getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getApplicationContext(), ProducerHomeActivity.class);
-                        startActivity(intent);
-                        overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+                    if(!isNew) {
+                        if(type.equals("1")) {
+                            Toast.makeText(getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                            startActivity(intent);
+                            overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+                        }
+                        else if (type.equals("2")&&type.equals("3")){
+                            Toast.makeText(getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(), ProducerHomeActivity.class);
+                            startActivity(intent);
+                            overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+                        }
+                        else {
+                            Toast.makeText(getApplicationContext(), "注册成功", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(), ProducerHomeActivity.class);
+                            startActivity(intent);
+                            overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+                        }
                     }
                     else {
-                        Toast.makeText(getApplicationContext(), "注册成功", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getApplicationContext(), ProducerHomeActivity.class);
-                        startActivity(intent);
-                        overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+                        Long timeStamp = System.currentTimeMillis();  //获取当前时间戳
+                        String sd = String.valueOf(timeStamp);
+                        String name = "用户";
+                        try {
+                            name = name.concat(Base64.getEncoder().encodeToString(sd.substring(0,10).getBytes("UTF-8")));
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        post2(phone, name, "http://buybychain.cn:8888/newcus");
                     }
                 } else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
                     // 获取验证码成功，true为智能验证，false为普通下发短信
