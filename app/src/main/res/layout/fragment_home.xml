@@ -74,6 +74,28 @@
                 android:textColor="@color/black"/>
         </RelativeLayout>
 
+        <RelativeLayout
+            android:id="@+id/rating"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="400dp">
+            <com.hedgehog.ratingbar.RatingBar
+                android:id="@+id/ratingbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                app:clickable="true"
+                app:halfstart="false"
+                app:starCount="5"
+                app:starEmpty="@mipmap/star_empty"
+                app:starFill="@mipmap/star_full"
+                app:starHalf="@mipmap/star_half"
+                app:starImageHeight="90dp"
+                app:starImageWidth="70dp"
+                app:starImagePadding="20dp"/>
+        </RelativeLayout>
+
 
     </RelativeLayout>
 

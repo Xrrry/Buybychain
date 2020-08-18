@@ -56,14 +56,14 @@ public class Launcher extends AppCompatActivity {
             application.setType("1");
             application.setName("Zzz");
             if(application.getType().equals("1")) {
-                timer.schedule(task1,1000);
+                timer.schedule(task1,1000); //用户
             }
             else {
-                timer.schedule(task3,1000);
+                timer.schedule(task3,1000); // 商家/卖家
             }
         }
         else {
-            timer.schedule(task2,1000);
+            timer.schedule(task2,1000); // 登录
         }
     }
 }
