@@ -2,37 +2,28 @@ package com.example.buybychain;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.SimpleAdapter;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bean.PerAllHistory;
 import com.bean.Saler;
 import com.google.gson.Gson;
 import com.hedgehog.ratingbar.RatingBar;
 
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -41,13 +32,9 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class RankList extends AppCompatActivity {
-    private ListView listview_1;
-    private MyAdapter adapter;
-    private List<Map<String, Object>> list;
-    private Map<String, Object> map;
+public class Comment extends AppCompatActivity {
+    private float ratingStar = 0;
     final Handler handler = new Handler();
-    private String[] ss;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,15 +63,50 @@ public class RankList extends AppCompatActivity {
 
             }
         }
-        setContentView(R.layout.activity_rank_list);
-        listview_1 = (ListView) this.findViewById(R.id.Listview_1);
-        list = new ArrayList<Map<String, Object>>();
-        post("http://buybychain.cn:8888/ranklist");
+        setContentView(R.layout.activity_comment);
+        final Intent intent = getIntent();
+        final String sal_acc = intent.getStringExtra("sal_acc");
+        final String nickname = intent.getStringExtra("sal_nickname");
+        final TextView textView = findViewById(R.id.saler);
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                textView.setText(nickname);
+            }
+        });
+        RatingBar mRatingBar = (RatingBar) findViewById(R.id.ratingbar);
+        mRatingBar.setOnRatingChangeListener(
+                new RatingBar.OnRatingChangeListener() {
+                    @Override
+                    public void onRatingChange(float RatingCount) {
+                        ratingStar = RatingCount;
+                        System.out.println(ratingStar);
+                    }
+                }
+        );
+        Button button = findViewById(R.id.submit);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                float cnt = Float.valueOf(intent.getStringExtra("sal_cnt")) + 1;
+                float total = Float.valueOf(intent.getStringExtra("sal_total")) + ratingStar;
+                int cred = Math.round(total/cnt*100);
+                String sal_cnt = String.valueOf(Math.round(cnt));
+                String sal_total = String.valueOf(Math.round(total));
+                String sal_cred = String.valueOf(cred);
+                post("http://buybychain.cn:8888/comment",sal_acc, nickname, sal_cred, sal_cnt, sal_total);
+            }
+        });
     }
-
-    public void post(String url){
+    public void post(String url, String sal_acc, String sal_nickname, String sal_cred, String sal_cnt, String sal_total){
         OkHttpClient client = new OkHttpClient();
-        FormBody body = new FormBody.Builder().build();
+        FormBody body = new FormBody.Builder()
+                .add("sal_acc",sal_acc)
+                .add("sal_nickname",sal_nickname)
+                .add("sal_cred", sal_cred)
+                .add("sal_cnt", sal_cnt)
+                .add("sal_total",sal_total)
+                .build();
 
         Request request = new Request.Builder()
                 .url(url)
@@ -106,55 +128,20 @@ public class RankList extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 if(response.isSuccessful()) {
                     final String body = response.body().string();
-                    Gson gson = new Gson();
-                    List<String> salerList = gson.fromJson(body,List.class);
-                    for (String i : salerList) {
-                        Saler item = gson.fromJson(i,Saler.class);
-                        map = new HashMap<String, Object>();
-                        map.put("sal_name", item.getSal_nickname());
-                        map.put("sal_score", item.getSal_cred());
-                        list.add(map);
+                    if(body.equals("更新成功")){
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(), "评价成功" ,Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+                        });
                     }
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            String[] form = {"sal_name"};
-                            int[] to = {R.id.sal_name};
-                            adapter = new MyAdapter(getApplicationContext(), list, R.layout.rankitem, form, to);
-                            listview_1.setAdapter(adapter);
-                        }
-                    });
                 }
             }
         });
     }
-
-    public class MyAdapter extends SimpleAdapter {
-        //上下文
-        Context context;
-        //private LayoutInflater mInflater;
-
-        public MyAdapter(Context context,
-                         List<? extends Map<String, ?>> data, int resource, String[] from,
-                         int[] to) {
-            super(context, data, resource, from, to);
-            this.context = context;
-            //this.mInflater = LayoutInflater.from(context);
-        }
-
-        @Override
-        public View getView(final int i, View convertView, ViewGroup viewGroup) {
-            View view = super.getView(i, convertView, viewGroup);
-            RelativeLayout item = view.findViewById(R.id.item);
-            item.setTag(i);//设置标签
-            item.setOnClickListener(new android.view.View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                }
-            });
-            RatingBar mRatingBar = item.findViewById(R.id.ratingbar);
-            mRatingBar.setStar(Float.valueOf(list.get(i).get("sal_score").toString())/100);
-            return view;
-        }
+    public String phoneTrans(String s) {
+        return s.substring(0,3) + "****" + s.substring(7,11);
     }
 }

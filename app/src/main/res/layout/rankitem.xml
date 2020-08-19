@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@id/item"
     android:layout_width="match_parent"
     android:layout_height="70dp">
@@ -21,16 +22,32 @@
         android:text="小米旗舰店"
         android:textColor="@color/black"/>
 
-    <TextView
-        android:id="@+id/sal_score"
+<!--    <TextView-->
+<!--        android:id="@+id/sal_score"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentEnd="true"-->
+<!--        android:layout_marginEnd="30dp"-->
+<!--        android:layout_centerVertical="true"-->
+<!--        android:textSize="25sp"-->
+<!--        android:text="5.0"-->
+<!--        android:textColor="@color/black"/>-->
+    <com.hedgehog.ratingbar.RatingBar
+        android:id="@+id/ratingbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="30dp"
         android:layout_centerVertical="true"
-        android:textSize="25sp"
-        android:text="5.0"
-        android:textColor="@color/black"/>
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dp"
+        app:clickable="false"
+        app:halfstart="true"
+        app:starCount="5"
+        app:starEmpty="@mipmap/star_empty"
+        app:starFill="@mipmap/star_full"
+        app:starHalf="@mipmap/star_half"
+        app:starImageHeight="25dp"
+        app:starImageWidth="25dp"
+        app:starImagePadding="0dp"/>
 
 
 </RelativeLayout>

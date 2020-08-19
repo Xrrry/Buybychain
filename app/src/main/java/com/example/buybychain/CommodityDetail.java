@@ -3,6 +3,7 @@ package com.example.buybychain;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.media.Image;
 import android.os.Build;
@@ -11,6 +12,7 @@ import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -24,6 +26,7 @@ import com.bean.HisQueryitem;
 import com.bean.HisSell;
 import com.bean.HisSellitem;
 import com.bean.PerAllHistory;
+import com.bean.Saler;
 import com.bean.SearchDetail;
 import com.google.gson.Gson;
 
@@ -57,6 +60,8 @@ public class CommodityDetail extends AppCompatActivity {
     private List<Map<String, Object>> hisselllist;
     private List<Map<String, Object>> hisquerylist;
     private Map<String, Object> map;
+    private Button button;
+    private LinearLayout query, big, sell;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,8 +100,12 @@ public class CommodityDetail extends AppCompatActivity {
         cus_time = findViewById(R.id.cus_time);
         cus_acc = findViewById(R.id.cus_acc);
         all = findViewById(R.id.pageall);
+        query = findViewById(R.id.query);
+        big = findViewById(R.id.big);
+        sell = findViewById(R.id.sell);
         listview_1 = (ListView) this.findViewById(R.id.hissell);
         listview_2 = (ListView) this.findViewById(R.id.hisquery);
+        button = findViewById(R.id.submit);
         hisselllist = new ArrayList<Map<String, Object>>();
         hisquerylist = new ArrayList<Map<String, Object>>();
         String scanResult = getIntent().getStringExtra("scanResult");
@@ -134,7 +143,7 @@ public class CommodityDetail extends AppCompatActivity {
                     final SearchDetail searchDetail = gson.fromJson(body,SearchDetail.class);
                     System.out.println(searchDetail.toString());
                     String his1 = searchDetail.getAll_his_sell();
-                    HisSell hisSell = gson.fromJson(his1, HisSell.class);
+                    final HisSell hisSell = gson.fromJson(his1, HisSell.class);
                     List<HisSellitem> hisSellList = hisSell.getHisSellList();
                     System.out.println(hisSellList.toString());
                     final HisSellitem hisSellitem = hisSell.getHisSellList().get(hisSell.getHisSellList().size()-1);
@@ -181,6 +190,23 @@ public class CommodityDetail extends AppCompatActivity {
                             adapter2 = new MyAdapter(getApplicationContext(), hisquerylist, R.layout.hisqueryitem, form2, to2);
                             listview_2.setAdapter(adapter2);
                             all.setVisibility(View.VISIBLE);
+                            if (hisselllist.size() == 0) {
+                                big.removeView(sell);
+                            }
+                            if (hisquerylist.size() == 0) {
+                                big.removeView(query);
+                            }
+                        }
+                    });
+                    button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(getApplicationContext(), Comment.class);
+                            intent.putExtra("sal_acc", hisSellitem.getSell_sal_acc());
+                            intent.putExtra("sal_nickname", hisSellitem.getSell_nickname());
+                            intent.putExtra("sal_cnt", hisSellitem.getSal_cnt());
+                            intent.putExtra("sal_total", hisSellitem.getSal_total());
+                            startActivity(intent);
                         }
                     });
                 }

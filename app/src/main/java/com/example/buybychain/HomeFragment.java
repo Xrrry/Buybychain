@@ -55,7 +55,7 @@ public class HomeFragment extends Fragment {
     private String mParam2;
     private SearchView search;
     private TextView searchText;
-    private RelativeLayout bt1, bt2, rating;
+    private RelativeLayout bt1, bt2;
     final Handler handler = new Handler();
 
     private OnFragmentInteractionListener mListener;
@@ -98,7 +98,6 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        rating = view.findViewById(R.id.rating);
         search = view.findViewById(R.id.search);
         bt1 = view.findViewById(R.id.b1All);
         bt1.setOnClickListener(new View.OnClickListener() {
@@ -126,16 +125,16 @@ public class HomeFragment extends Fragment {
         }
         ImageView searchIcon = search.findViewById(androidx.appcompat.R.id.search_mag_icon);
         searchIcon.setImageResource(R.drawable.search);
-        RatingBar mRatingBar = (RatingBar) rating.findViewById(R.id.ratingbar);
-        mRatingBar.setStar(3);
-        mRatingBar.setOnRatingChangeListener(
-                new RatingBar.OnRatingChangeListener() {
-                    @Override
-                    public void onRatingChange(float RatingCount) {
-                        Toast.makeText(getActivity(), "the fill star is" + RatingCount, Toast.LENGTH_SHORT).show();
-                    }
-                }
-        );
+//        RatingBar mRatingBar = (RatingBar) rating.findViewById(R.id.ratingbar);
+//        mRatingBar.setStar(3);
+//        mRatingBar.setOnRatingChangeListener(
+//                new RatingBar.OnRatingChangeListener() {
+//                    @Override
+//                    public void onRatingChange(float RatingCount) {
+//                        Toast.makeText(getActivity(), "the fill star is" + RatingCount, Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//        );
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

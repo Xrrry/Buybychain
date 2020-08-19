@@ -27,4 +27,8 @@ public class HisSellitem {
     private String cus_nickname;
     @SerializedName("value9")
     private String sell_track_num;
+    @SerializedName("value10")
+    private String sal_cnt;
+    @SerializedName("value11")
+    private String sal_total;
 }
