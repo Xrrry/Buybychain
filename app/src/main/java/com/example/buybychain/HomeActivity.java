@@ -111,6 +111,12 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnFr
             post("http://buybychain.cn:8888/loginSearch",application.getPhone());
         }
     }
+    public String transformJson(String s){
+        String string = s.substring(6);
+        string = string.replace("{","{\"").replace("}","\"}");
+        string = string.replaceAll("=","\":\"").replaceAll(", ","\",\"");
+        return string;
+    }
 
     public void post(String url, String phone){
         OkHttpClient client = new OkHttpClient();
@@ -140,7 +146,8 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnFr
                     final String body = response.body().string();
                     if (!body.equals("不存在")) {
                         Gson gson = new Gson();
-                        User user = gson.fromJson(body,User.class);
+                        String b = transformJson(body);
+                        User user = gson.fromJson(b,User.class);
                         String type = user.getUser_type();
                         if (type.equals("2")||type.equals("3")) {
                             Buybychain application = (Buybychain) getApplication();

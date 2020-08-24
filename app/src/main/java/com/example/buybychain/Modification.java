@@ -2,6 +2,7 @@ package com.example.buybychain;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -109,9 +110,16 @@ public class Modification extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "更新成功" ,Toast.LENGTH_LONG).show();
                             }
                         });
+                        SharedPreferences sp = getSharedPreferences("login", getApplicationContext().MODE_PRIVATE);
                         Buybychain application = (Buybychain) getApplication();
                         application.setName(nickname);
                         application.setChange(true);
+                        sp.edit()
+                                .remove("name")
+                                .apply();
+                        sp.edit()
+                                .putString("name",nickname)
+                                .apply();
                         finish();
                     }
                 }
