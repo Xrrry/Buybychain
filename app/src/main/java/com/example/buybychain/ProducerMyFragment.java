@@ -4,12 +4,14 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.leon.lib.settingview.LSettingItem;
+
+import org.w3c.dom.Text;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,6 +42,7 @@ public class ProducerMyFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private ImageView signout;
+    private Handler mHandler = new Handler();
 
     private OnFragmentInteractionListener mListener;
 
@@ -85,6 +90,7 @@ public class ProducerMyFragment extends Fragment {
         TextView tv2 = (TextView) bt3.findViewById(R.id.tv_lefttext);
         TextView tv = view.findViewById(R.id.shenfen);
         RelativeLayout rl = view.findViewById(R.id.rela);
+        final TextView name = view.findViewById(R.id.name);
         Buybychain application = (Buybychain) getActivity().getApplication();
         bt1.setmOnLSettingItemClick(new LSettingItem.OnLSettingItemClick() {
             @Override
@@ -112,6 +118,15 @@ public class ProducerMyFragment extends Fragment {
             public void click() {
                 Intent intent = new Intent(getActivity(), About.class);
                 startActivity(intent);
+            }
+        });
+        SharedPreferences sp = getActivity().getSharedPreferences("login", getActivity().getApplicationContext().MODE_PRIVATE);
+        final String n = sp.getString("name","用户");
+        System.out.println(n);
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                name.setText(n);
             }
         });
         if(Integer.valueOf(application.getType())==3) {

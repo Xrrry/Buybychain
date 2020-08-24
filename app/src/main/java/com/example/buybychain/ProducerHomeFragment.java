@@ -107,7 +107,8 @@ public class ProducerHomeFragment extends Fragment {
             }
         });
         TextView tv = view.findViewById(R.id.selltext);
-        if(Integer.valueOf(application.getType())==3) {
+        System.out.println(application.getType());
+        if(application.getType().equals("3")) {
             tv.setText("卖出");
         }
         // Inflate the layout for this fragment

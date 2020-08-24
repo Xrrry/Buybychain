@@ -4,11 +4,13 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +41,7 @@ public class MyFragment extends Fragment {
     private String mParam2;
     private ImageView signout;
     private TextView ntv;
+    private Handler mHandler = new Handler();
 
     private OnFragmentInteractionListener mListener;
 
@@ -80,7 +83,15 @@ public class MyFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_my, container, false);
         Buybychain application = (Buybychain) getActivity().getApplication();
         ntv = view.findViewById(R.id.name);
-        ntv.setText(application.getName());
+        SharedPreferences sp = getActivity().getSharedPreferences("login", getActivity().getApplicationContext().MODE_PRIVATE);
+        final String n = sp.getString("name","用户");
+        System.out.println(n);
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                ntv.setText(n);
+            }
+        });
         LSettingItem bt1 = view.findViewById(R.id.my1);
         LSettingItem bt2 = view.findViewById(R.id.my2);
         LSettingItem bt3 = view.findViewById(R.id.my3);
@@ -113,6 +124,7 @@ public class MyFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
         signout = view.findViewById(R.id.signout);
         signout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,6 +135,12 @@ public class MyFragment extends Fragment {
                 builder.setPositiveButton("退出", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        SharedPreferences sp = getActivity().getSharedPreferences("login", getActivity().getApplicationContext().MODE_PRIVATE);
+                        sp.edit()
+                                .remove("phone")
+                                .remove("name")
+                                .remove("type")
+                                .apply();
                         Intent i1 = new Intent(getActivity(), LoginActivity.class);
                         startActivity(i1);
                     }

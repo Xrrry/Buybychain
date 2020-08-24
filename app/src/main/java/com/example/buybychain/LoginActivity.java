@@ -56,6 +56,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private String type = null;
     Handler mhandler = new Handler();
     private Boolean isNew = false;
+    private String name = null;
+    private Boolean f = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,8 +98,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
         setContentView(R.layout.activity_login);
 
-        SharedPreferences sp = getSharedPreferences("login", getApplicationContext().MODE_PRIVATE);
-        String phone = sp.getString("phone", null);
+//        SharedPreferences sp = getSharedPreferences("login", getApplicationContext().MODE_PRIVATE);
+//        String phone = sp.getString("phone", null);
 //        if (phone != null) {
 //            Buybychain application = (Buybychain) getApplicationContext();
 //            application.setPhone(phone);
@@ -137,6 +139,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         SMSSDK.getVerificationCode("86", phoneNumber); // 发送验证码给号码的 phoneNumber 的手机
                         etVerificationCode.requestFocus();
                         post1("http://buybychain.cn:8888/loginSearch",phoneNumber);
+                        System.out.println("onpost1");
                         Myhandler.post(new Runnable() {
                             @Override
                             public void run() {
@@ -175,7 +178,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    public void post1(String url, String phone){
+    public String transformJson(String s){
+        String string = s.substring(6);
+        string = string.replace("{","{\"").replace("}","\"}");
+        string = string.replaceAll("=","\":\"").replaceAll(", ","\",\"");
+        return string;
+    }
+
+    public void post1(String url, final String phone){
         OkHttpClient client = new OkHttpClient();
         FormBody body = new FormBody.Builder()
                 .add("phone",phone)
@@ -202,12 +212,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if(response.isSuccessful()) {
                     final String body = response.body().string();
                     if (!body.equals("不存在")) {
+                        System.out.println("checkisnotnew");
                         Gson gson = new Gson();
-                        User user = gson.fromJson(body,User.class);
+                        String b = transformJson(body);
+                        User user = gson.fromJson(b,User.class);
                         type = user.getUser_type();
                         System.out.println(type);
+                        post3("http://buybychain.cn:8888/searchname", phone, type);
                     }
                     else {
+                        System.out.println("checkisnew");
                         isNew = true;
                     }
                 }
@@ -259,6 +273,40 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         });
     }
 
+    public void post3(String url, String acc, String type){
+        OkHttpClient client = new OkHttpClient();
+        FormBody body = new FormBody.Builder()
+                .add("phone", acc)
+                .add("type", type)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+        Call call = client.newCall(request);
+        call.enqueue(new okhttp3.Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                mhandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getApplicationContext(), "post请求失败" ,Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if(response.isSuccessful()) {
+                    final String body = response.body().string();
+                    System.out.println(body);
+                    name = body;
+                }
+            }
+        });
+    }
+
 
     @SuppressLint("HandlerLeak")
     Handler handler = new Handler() {
@@ -282,35 +330,47 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             .putString("phone", phone)
                             .apply();
                     if(!isNew) {
+                        System.out.println("isnotnew");
+                        System.out.println(name);
+                        application.setType(type);
+                        application.setName(name);
+                        sp.edit()
+                                .putString("type", type)
+                                .putString("name", name)
+                                .apply();
+                        application.setType(type);
                         if(type.equals("1")) {
                             Toast.makeText(getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                             startActivity(intent);
                             overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
                         }
-                        else if (type.equals("2")&&type.equals("3")){
+                        else if (type.equals("2")||type.equals("3")){
                             Toast.makeText(getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(getApplicationContext(), ProducerHomeActivity.class);
-                            startActivity(intent);
-                            overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
-                        }
-                        else {
-                            Toast.makeText(getApplicationContext(), "注册成功", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplicationContext(), ProducerHomeActivity.class);
                             startActivity(intent);
                             overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
                         }
                     }
                     else {
+                        System.out.println("isnew");
                         Long timeStamp = System.currentTimeMillis();  //获取当前时间戳
                         String sd = String.valueOf(timeStamp);
-                        String name = "用户";
+                        String newname = "用户";
                         try {
-                            name = name.concat(Base64.getEncoder().encodeToString(sd.substring(0,10).getBytes("UTF-8")));
+                            newname = newname.concat(Base64.getEncoder().encodeToString(sd.substring(0,10).getBytes("UTF-8")));
+                            newname = newname.replaceAll("=","");
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
-                        post2(phone, name, "http://buybychain.cn:8888/newcus");
+                        System.out.println(newname);
+                        sp.edit()
+                                .putString("type","1")
+                                .putString("name", newname)
+                                .apply();
+                        application.setName(newname);
+                        application.setType("1");
+                        post2(phone, newname, "http://buybychain.cn:8888/newcus");
                     }
                 } else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
                     // 获取验证码成功，true为智能验证，false为普通下发短信

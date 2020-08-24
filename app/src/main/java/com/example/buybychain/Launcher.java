@@ -28,6 +28,8 @@ public class Launcher extends AppCompatActivity {
 
         SharedPreferences sp = getSharedPreferences("login", getApplicationContext().MODE_PRIVATE);
         String phone = sp.getString("phone", null);
+        String type = sp.getString("type","1");
+        String name = sp.getString("name","未注册用户");
         Timer timer=new Timer();
         TimerTask task1=new TimerTask() {
             public void run() {
@@ -53,9 +55,9 @@ public class Launcher extends AppCompatActivity {
         if (phone != null) {
             Buybychain application = (Buybychain) getApplication();
             application.setPhone(phone);
-            application.setType("1");
-            application.setName("Zzz");
-            if(application.getType().equals("1")) {
+            application.setType(type);
+            application.setName(name);
+            if(type.equals("1")) {
                 timer.schedule(task1,1000); //用户
             }
             else {
