@@ -29,7 +29,8 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:name">
-        <activity android:name=".Comment"></activity>
+        <activity android:name=".NoResult"></activity>
+        <activity android:name=".Comment" />
         <activity android:name=".RankList" />
         <activity android:name=".OutHistory" />
         <activity android:name=".SellHistory" />

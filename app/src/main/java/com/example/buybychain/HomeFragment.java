@@ -143,6 +143,7 @@ public class HomeFragment extends Fragment {
                 searchText.setText("");
                 Intent intent = new Intent(getActivity(), CommodityDetail.class);
                 intent.putExtra("scanResult",query);
+                intent.putExtra("history","0");
                 startActivity(intent);
                 //点击搜索
                 return false;

@@ -21,6 +21,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bean.Commodity;
 import com.bean.HisQuery;
 import com.bean.HisQueryitem;
 import com.bean.HisSell;
@@ -50,6 +51,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class CommodityDetail extends AppCompatActivity {
+    public static CommodityDetail instance;
     Handler handler = new Handler();
     private ListView listview_1, listview_2;
     private MyAdapter adapter1, adapter2;
@@ -65,6 +67,7 @@ public class CommodityDetail extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        instance = this;
         super.onCreate(savedInstanceState);
         // 隐藏标题栏
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -109,14 +112,22 @@ public class CommodityDetail extends AppCompatActivity {
         hisselllist = new ArrayList<Map<String, Object>>();
         hisquerylist = new ArrayList<Map<String, Object>>();
         String scanResult = getIntent().getStringExtra("scanResult");
-        post("http://buybychain.cn:8888/query",scanResult);
+        String history = getIntent().getStringExtra("history");
+        Buybychain application = (Buybychain) getApplication();
+        if(history.equals("1")){
+            post("http://buybychain.cn:8888/queryHistory",scanResult,application.getPhone());
+        }
+        else {
+            post("http://buybychain.cn:8888/query",scanResult,application.getPhone());
+        }
 
     }
 
-    public void post(String url, String scanResult){
+    public void post(String url, String scanResult, String user_id){
         OkHttpClient client = new OkHttpClient();
         FormBody body = new FormBody.Builder()
                 .add("out_id",scanResult)
+                .add("user_id",user_id)
                 .build();
 
         Request request = new Request.Builder()
@@ -139,76 +150,87 @@ public class CommodityDetail extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 if(response.isSuccessful()) {
                     final String body = response.body().string();
-                    Gson gson = new Gson();
-                    final SearchDetail searchDetail = gson.fromJson(body,SearchDetail.class);
-                    System.out.println(searchDetail.toString());
-                    String his1 = searchDetail.getAll_his_sell();
-                    final HisSell hisSell = gson.fromJson(his1, HisSell.class);
-                    List<HisSellitem> hisSellList = hisSell.getHisSellList();
-                    System.out.println(hisSellList.toString());
-                    final HisSellitem hisSellitem = hisSell.getHisSellList().get(hisSell.getHisSellList().size()-1);
-                    String his2 = searchDetail.getAll_his_query();
-                    HisQuery hisQuery = gson.fromJson(his2, HisQuery.class);
-                    List<HisQueryitem> hisQueryList = hisQuery.getHisQueryList();
+                    if (body.equals("不存在")) {
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent intent = new Intent(getApplicationContext(), NoResult.class);
+                                startActivity(intent);
+                            }
+                        });
+                    }
+                    else{
+                        Gson gson = new Gson();
+                        final SearchDetail searchDetail = gson.fromJson(body,SearchDetail.class);
+                        System.out.println(searchDetail.toString());
+                        String his1 = searchDetail.getAll_his_sell();
+                        final HisSell hisSell = gson.fromJson(his1, HisSell.class);
+                        List<HisSellitem> hisSellList = hisSell.getHisSellList();
+                        System.out.println(hisSellList.toString());
+                        final HisSellitem hisSellitem = hisSell.getHisSellList().get(hisSell.getHisSellList().size()-1);
+                        String his2 = searchDetail.getAll_his_query();
+                        HisQuery hisQuery = gson.fromJson(his2, HisQuery.class);
+                        List<HisQueryitem> hisQueryList = hisQuery.getHisQueryList();
 //                    HisQueryitem hisQueryitem = hisQuery.getHisQueryList().get(hisQuery.getHisQueryList().size()-1);
-                    System.out.println(hisQueryList.toString());
-                    final Long timeStamp = System.currentTimeMillis();  //获取当前时间戳
-                    final SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    final String sd = sdf.format(new Date(Long.parseLong(String.valueOf(timeStamp))));
-                    for (HisSellitem s : hisSellList) {
-                        map = new HashMap<String, Object>();
-                        map.put("time", sdf.format(new Date(Long.valueOf(s.getSell_time() + "000"))));
-                        map.put("track", "快递单号: " + s.getSell_track_num());
-                        map.put("saler", s.getSell_nickname());
-                        map.put("customer", s.getCus_nickname() + " (" + phoneTrans(s.getSell_cus_acc()) + ")");
-                        hisselllist.add(map);
-                    }
-                    for (HisQueryitem s : hisQueryList) {
-                        map = new HashMap<String, Object>();
-                        map.put("time", sdf.format(new Date(Long.valueOf(s.getHis_time() + "000"))));
-                        map.put("cus_acc", phoneTrans(s.getHis_cus_acc()));
-                        hisquerylist.add(map);
-                    }
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            com_name.setText(searchDetail.getCom_name());
-                            com_price.setText("价格：¥" + searchDetail.getCom_price());
-                            com_type.setText("类别：" + searchDetail.getCom_cate());
-                            com_place.setText("产地：" + searchDetail.getCom_place());
-                            String outTime = sdf.format(new Date(Long.valueOf(searchDetail.getOut_birthday() + "000")));
-                            pro_time.setText(outTime);
-                            pro_acc.setText(searchDetail.getPro_nickname() + " (" + phoneTrans(searchDetail.getPro_acc()) + ")");
-                            cus_time.setText(sd);
-                            cus_acc.setText(hisSellitem.getCus_nickname() + " (" + phoneTrans(hisSellitem.getSell_cus_acc()) + ")");
-                            String[] form1 = {"time", "track", "saler", "customer"};
-                            int[] to1 = {R.id.time, R.id.track, R.id.saler, R.id.customer};
-                            adapter1 = new MyAdapter(getApplicationContext(), hisselllist, R.layout.hissellitem, form1, to1);
-                            listview_1.setAdapter(adapter1);
-                            String[] form2 = {"time", "cus_acc"};
-                            int[] to2 = {R.id.time, R.id.cus_acc};
-                            adapter2 = new MyAdapter(getApplicationContext(), hisquerylist, R.layout.hisqueryitem, form2, to2);
-                            listview_2.setAdapter(adapter2);
-                            all.setVisibility(View.VISIBLE);
-                            if (hisselllist.size() == 0) {
-                                big.removeView(sell);
-                            }
-                            if (hisquerylist.size() == 0) {
-                                big.removeView(query);
-                            }
+                        System.out.println(hisQueryList.toString());
+                        final Long timeStamp = System.currentTimeMillis();  //获取当前时间戳
+                        final SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        final String sd = sdf.format(new Date(Long.parseLong(String.valueOf(timeStamp))));
+                        for (HisSellitem s : hisSellList) {
+                            map = new HashMap<String, Object>();
+                            map.put("time", sdf.format(new Date(Long.valueOf(s.getSell_time() + "000"))));
+                            map.put("track", "快递单号: " + s.getSell_track_num());
+                            map.put("saler", s.getSell_nickname());
+                            map.put("customer", s.getCus_nickname() + " (" + phoneTrans(s.getSell_cus_acc()) + ")");
+                            hisselllist.add(map);
                         }
-                    });
-                    button.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(getApplicationContext(), Comment.class);
-                            intent.putExtra("sal_acc", hisSellitem.getSell_sal_acc());
-                            intent.putExtra("sal_nickname", hisSellitem.getSell_nickname());
-                            intent.putExtra("sal_cnt", hisSellitem.getSal_cnt());
-                            intent.putExtra("sal_total", hisSellitem.getSal_total());
-                            startActivity(intent);
+                        for (HisQueryitem s : hisQueryList) {
+                            map = new HashMap<String, Object>();
+                            map.put("time", sdf.format(new Date(Long.valueOf(s.getHis_time() + "000"))));
+                            map.put("cus_acc", phoneTrans(s.getHis_cus_acc()));
+                            hisquerylist.add(map);
                         }
-                    });
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                com_name.setText(searchDetail.getCom_name());
+                                com_price.setText("价格：¥" + searchDetail.getCom_price());
+                                com_type.setText("类别：" + searchDetail.getCom_cate());
+                                com_place.setText("产地：" + searchDetail.getCom_place());
+                                String outTime = sdf.format(new Date(Long.valueOf(searchDetail.getOut_birthday() + "000")));
+                                pro_time.setText(outTime);
+                                pro_acc.setText(searchDetail.getPro_nickname() + " (" + phoneTrans(searchDetail.getPro_acc()) + ")");
+                                cus_time.setText(sd);
+                                cus_acc.setText(hisSellitem.getCus_nickname() + " (" + phoneTrans(hisSellitem.getSell_cus_acc()) + ")");
+                                String[] form1 = {"time", "track", "saler", "customer"};
+                                int[] to1 = {R.id.time, R.id.track, R.id.saler, R.id.customer};
+                                adapter1 = new MyAdapter(getApplicationContext(), hisselllist, R.layout.hissellitem, form1, to1);
+                                listview_1.setAdapter(adapter1);
+                                String[] form2 = {"time", "cus_acc"};
+                                int[] to2 = {R.id.time, R.id.cus_acc};
+                                adapter2 = new MyAdapter(getApplicationContext(), hisquerylist, R.layout.hisqueryitem, form2, to2);
+                                listview_2.setAdapter(adapter2);
+                                all.setVisibility(View.VISIBLE);
+                                if (hisselllist.size() == 0) {
+                                    big.removeView(sell);
+                                }
+                                if (hisquerylist.size() == 0) {
+                                    big.removeView(query);
+                                }
+                            }
+                        });
+                        button.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(getApplicationContext(), Comment.class);
+                                intent.putExtra("sal_acc", hisSellitem.getSell_sal_acc());
+                                intent.putExtra("sal_nickname", hisSellitem.getSell_nickname());
+                                intent.putExtra("sal_cnt", hisSellitem.getSal_cnt());
+                                intent.putExtra("sal_total", hisSellitem.getSal_total());
+                                startActivity(intent);
+                            }
+                        });
+                    }
                 }
             }
         });

@@ -227,6 +227,7 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.OnFr
                     String result = bundle.getString(CodeUtils.RESULT_STRING);
 //                    Toast.makeText(HomeActivity.this, "解析结果:" + result, Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(HomeActivity.this, CommodityDetail.class);
+                    intent.putExtra("history","0");
                     intent.putExtra("scanResult",result);
                     startActivity(intent);
                 } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {

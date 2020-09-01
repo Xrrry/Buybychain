@@ -162,6 +162,7 @@ public class History extends AppCompatActivity {
                     PerAllHistory perAllHistory = gson.fromJson(s,PerAllHistory.class);
                     Intent intent = new Intent(History.this, CommodityDetail.class);
                     intent.putExtra("scanResult",perAllHistory.getOut_id());
+                    intent.putExtra("history","1");
                     startActivity(intent);
                 }
             });
