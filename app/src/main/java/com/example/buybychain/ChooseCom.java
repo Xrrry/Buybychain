@@ -77,7 +77,7 @@ public class ChooseCom extends AppCompatActivity {
         Buybychain application = (Buybychain) getApplication();
         listview_1 = (ListView) this.findViewById(R.id.Listview_1);
         list = new ArrayList<Map<String, Object>>();
-        post("http://buybychain.cn:8888/proAllCom","15555555555");
+        post("http://buybychain.cn:8888/proAllCom",application.getPhone());
     }
 
     public void post(String url, String pro_acc){

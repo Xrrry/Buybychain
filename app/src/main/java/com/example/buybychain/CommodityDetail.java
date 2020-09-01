@@ -172,13 +172,20 @@ public class CommodityDetail extends AppCompatActivity {
                         System.out.println(hisSellList.toString());
                         final HisSellitem hisSellitem = hisSell.getHisSellList().get(hisSell.getHisSellList().size()-1);
                         String his2 = searchDetail.getAll_his_query();
-                        HisQuery hisQuery = gson.fromJson(his2, HisQuery.class);
-                        List<HisQueryitem> hisQueryList = hisQuery.getHisQueryList();
-//                    HisQueryitem hisQueryitem = hisQuery.getHisQueryList().get(hisQuery.getHisQueryList().size()-1);
-                        System.out.println(hisQueryList.toString());
                         final Long timeStamp = System.currentTimeMillis();  //获取当前时间戳
                         final SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         final String sd = sdf.format(new Date(Long.parseLong(String.valueOf(timeStamp))));
+                        if(!his2.equals("count=0")) {
+                            HisQuery hisQuery = gson.fromJson(his2, HisQuery.class);
+                            List<HisQueryitem> hisQueryList = hisQuery.getHisQueryList();
+                            System.out.println(hisQueryList.toString());
+                            for (HisQueryitem s : hisQueryList) {
+                                map = new HashMap<String, Object>();
+                                map.put("time", sdf.format(new Date(Long.valueOf(s.getHis_time() + "000"))));
+                                map.put("cus_acc", phoneTrans(s.getHis_cus_acc()));
+                                hisquerylist.add(map);
+                            }
+                        }
                         for (HisSellitem s : hisSellList) {
                             map = new HashMap<String, Object>();
                             map.put("time", sdf.format(new Date(Long.valueOf(s.getSell_time() + "000"))));
@@ -187,12 +194,7 @@ public class CommodityDetail extends AppCompatActivity {
                             map.put("customer", s.getCus_nickname() + " (" + phoneTrans(s.getSell_cus_acc()) + ")");
                             hisselllist.add(map);
                         }
-                        for (HisQueryitem s : hisQueryList) {
-                            map = new HashMap<String, Object>();
-                            map.put("time", sdf.format(new Date(Long.valueOf(s.getHis_time() + "000"))));
-                            map.put("cus_acc", phoneTrans(s.getHis_cus_acc()));
-                            hisquerylist.add(map);
-                        }
+
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
@@ -205,27 +207,31 @@ public class CommodityDetail extends AppCompatActivity {
                                 pro_acc.setText(searchDetail.getPro_nickname() + " (" + phoneTrans(searchDetail.getPro_acc()) + ")");
                                 cus_time.setText(sd);
                                 cus_acc.setText(hisSellitem.getCus_nickname() + " (" + phoneTrans(hisSellitem.getSell_cus_acc()) + ")");
-                                String[] form1 = {"time", "track", "saler", "customer"};
-                                int[] to1 = {R.id.time, R.id.track, R.id.saler, R.id.customer};
-                                adapter1 = new MyAdapter(getApplicationContext(), hisselllist, R.layout.hissellitem, form1, to1);
-                                listview_1.setAdapter(adapter1);
-                                String[] form2 = {"time", "cus_acc"};
-                                int[] to2 = {R.id.time, R.id.cus_acc};
-                                adapter2 = new MyAdapter(getApplicationContext(), hisquerylist, R.layout.hisqueryitem, form2, to2);
-                                listview_2.setAdapter(adapter2);
+                                if (history.equals("1")) {
+                                    big.removeView(button);
+                                }
+                                if (hisselllist.size() != 0) {
+                                    String[] form1 = {"time", "track", "saler", "customer"};
+                                    int[] to1 = {R.id.time, R.id.track, R.id.saler, R.id.customer};
+                                    adapter1 = new MyAdapter(getApplicationContext(), hisselllist, R.layout.hissellitem, form1, to1);
+                                    listview_1.setAdapter(adapter1);
+                                }
+                                else {
+                                    big.removeView(sell);
+                                }
+                                if (hisquerylist.size() != 0) {
+                                    String[] form2 = {"time", "cus_acc"};
+                                    int[] to2 = {R.id.time, R.id.cus_acc};
+                                    adapter2 = new MyAdapter(getApplicationContext(), hisquerylist, R.layout.hisqueryitem, form2, to2);
+                                    listview_2.setAdapter(adapter2);
+                                }
+                                else {
+                                    big.removeView(query);
+                                }
                                 all.setVisibility(View.VISIBLE);
                                 if(hisselllist.size()<hisquerylist.size()) {
                                     System.out.println("warning");
                                     warning.setVisibility(View.VISIBLE);
-                                }
-                                if (history.equals("1")) {
-                                    big.removeView(button);
-                                }
-                                if (hisselllist.size() == 0) {
-                                    big.removeView(sell);
-                                }
-                                if (hisquerylist.size() == 0) {
-                                    big.removeView(query);
                                 }
                             }
                         });

@@ -89,18 +89,21 @@ public class UpOut extends AppCompatActivity {
                 Long timeStamp = System.currentTimeMillis(); //获取当前时间戳
                 String out_time = String.valueOf(timeStamp).substring(0,10);
                 MaterialEditText out_id = findViewById(R.id.out_id);
-                post("http://buybychain.cn:8888/upOut",out_time,out_id.getText().toString());
+                MaterialEditText com_name = findViewById(R.id.com_name);
+                Buybychain application = (Buybychain) getApplication();
+                post("http://buybychain.cn:8888/upOut",out_time,out_id.getText().toString(),com_id,com_name.getText().toString(),application.getPhone());
             }
         });
     }
 
-    public void post(String url, String out_time,String out_id){
+    public void post(String url, String out_time,String out_id,String com_id, String com_name, String pro_acc){
         OkHttpClient client = new OkHttpClient();
         FormBody body = new FormBody.Builder()
                 .add("out_id",out_id)
-                .add("pro_acc","15555555555")
+                .add("pro_acc",pro_acc)
                 .add("com_id",com_id)
                 .add("out_time",out_time)
+                .add("com_name",com_name)
                 .build();
 
         Request request = new Request.Builder()

@@ -83,7 +83,6 @@ public class UpSell extends AppCompatActivity {
                     findViewById(R.id.submit).setClickable(false);
                     Long timeStamp = System.currentTimeMillis(); //获取当前时间戳
                     String out_time = String.valueOf(timeStamp).substring(0,10);
-                    System.out.println(out_time);
                     post("http://buybychain.cn:8888/upSell",com, cus, out_time, track);
                 }
             }
