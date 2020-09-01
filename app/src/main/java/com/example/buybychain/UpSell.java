@@ -2,15 +2,21 @@ package com.example.buybychain;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentResolver;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
+import com.uuzuche.lib_zxing.activity.CodeUtils;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -54,7 +60,13 @@ public class UpSell extends AppCompatActivity {
             }
         }
         setContentView(R.layout.activity_up_sell);
-
+        findViewById(R.id.scan_my).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(UpSell.this, MyCamera.class);
+                startActivityForResult(intent, 1);
+            }
+        });
         findViewById(R.id.submit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,6 +88,60 @@ public class UpSell extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            //处理扫描结果（在界面上显示）
+            if (null != data) {
+                Bundle bundle = data.getExtras();
+                if (bundle == null) {
+                    return;
+                }
+                if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
+                    final String result = bundle.getString(CodeUtils.RESULT_STRING);
+                    Toast.makeText(UpSell.this, "扫描成功", Toast.LENGTH_SHORT).show();
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            MaterialEditText com_id = findViewById(R.id.com_id);
+                            com_id.setText(result);
+                        }
+                    });
+                } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
+                    Toast.makeText(UpSell.this, "解析二维码失败", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+        if (requestCode == 2) {
+            if (data != null) {
+                Uri uri = data.getData();
+                ContentResolver cr = getContentResolver();
+                try {
+                    Bitmap mBitmap = MediaStore.Images.Media.getBitmap(cr, uri);//显得到bitmap图片
+
+                    CodeUtils.analyzeBitmap(String.valueOf(mBitmap), new CodeUtils.AnalyzeCallback() {
+                        @Override
+                        public void onAnalyzeSuccess(Bitmap mBitmap, String result) {
+                            Toast.makeText(UpSell.this, "解析结果:" + result, Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onAnalyzeFailed() {
+                            Toast.makeText(UpSell.this, "解析二维码失败", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    if (mBitmap != null) {
+                        mBitmap.recycle();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public void post(String url, String sell_id, String sell_cus_acc, String sell_time, String sell_track_num){

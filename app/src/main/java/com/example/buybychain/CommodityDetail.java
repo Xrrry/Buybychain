@@ -58,12 +58,14 @@ public class CommodityDetail extends AppCompatActivity {
     private TextView com_name, com_price, com_type, com_place;
     private TextView pro_time, pro_acc;
     private TextView cus_time, cus_acc;
+    private TextView warning;
     private LinearLayout all;
     private List<Map<String, Object>> hisselllist;
     private List<Map<String, Object>> hisquerylist;
     private Map<String, Object> map;
     private Button button;
     private LinearLayout query, big, sell;
+    String history = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,13 +108,14 @@ public class CommodityDetail extends AppCompatActivity {
         query = findViewById(R.id.query);
         big = findViewById(R.id.big);
         sell = findViewById(R.id.sell);
+        warning = findViewById(R.id.warning);
         listview_1 = (ListView) this.findViewById(R.id.hissell);
         listview_2 = (ListView) this.findViewById(R.id.hisquery);
         button = findViewById(R.id.submit);
         hisselllist = new ArrayList<Map<String, Object>>();
         hisquerylist = new ArrayList<Map<String, Object>>();
         String scanResult = getIntent().getStringExtra("scanResult");
-        String history = getIntent().getStringExtra("history");
+        history = getIntent().getStringExtra("history");
         Buybychain application = (Buybychain) getApplication();
         if(history.equals("1")){
             post("http://buybychain.cn:8888/queryHistory",scanResult,application.getPhone());
@@ -211,6 +214,13 @@ public class CommodityDetail extends AppCompatActivity {
                                 adapter2 = new MyAdapter(getApplicationContext(), hisquerylist, R.layout.hisqueryitem, form2, to2);
                                 listview_2.setAdapter(adapter2);
                                 all.setVisibility(View.VISIBLE);
+                                if(hisselllist.size()<hisquerylist.size()) {
+                                    System.out.println("warning");
+                                    warning.setVisibility(View.VISIBLE);
+                                }
+                                if (history.equals("1")) {
+                                    big.removeView(button);
+                                }
                                 if (hisselllist.size() == 0) {
                                     big.removeView(sell);
                                 }
@@ -219,17 +229,19 @@ public class CommodityDetail extends AppCompatActivity {
                                 }
                             }
                         });
-                        button.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent intent = new Intent(getApplicationContext(), Comment.class);
-                                intent.putExtra("sal_acc", hisSellitem.getSell_sal_acc());
-                                intent.putExtra("sal_nickname", hisSellitem.getSell_nickname());
-                                intent.putExtra("sal_cnt", hisSellitem.getSal_cnt());
-                                intent.putExtra("sal_total", hisSellitem.getSal_total());
-                                startActivity(intent);
-                            }
-                        });
+                        if(!history.equals("1")) {
+                            button.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent intent = new Intent(getApplicationContext(), Comment.class);
+                                    intent.putExtra("sal_acc", hisSellitem.getSell_sal_acc());
+                                    intent.putExtra("sal_nickname", hisSellitem.getSell_nickname());
+                                    intent.putExtra("sal_cnt", hisSellitem.getSal_cnt());
+                                    intent.putExtra("sal_total", hisSellitem.getSal_total());
+                                    startActivity(intent);
+                                }
+                            });
+                        }
                     }
                 }
             }

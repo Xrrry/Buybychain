@@ -162,6 +162,12 @@ public class ProducerMyFragment extends Fragment {
                 builder.setPositiveButton("退出", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        SharedPreferences sp = getActivity().getSharedPreferences("login", getActivity().getApplicationContext().MODE_PRIVATE);
+                        sp.edit()
+                                .remove("phone")
+                                .remove("name")
+                                .remove("type")
+                                .apply();
                         Intent i1 = new Intent(getActivity(), LoginActivity.class);
                         startActivity(i1);
                     }

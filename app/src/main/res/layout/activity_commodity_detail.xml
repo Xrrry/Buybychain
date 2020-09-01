@@ -230,6 +230,16 @@
             android:textSize="20sp"
             android:textColor="@color/white"
             android:background="@drawable/bt_shape4"/>
+        <TextView
+            android:id="@+id/warning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center_horizontal"
+            android:text="本商品存在异常查询，请与商家核对信息！"
+            android:textColor="@color/red"
+            android:textSize="20sp"
+            android:visibility="invisible"/>
     </LinearLayout>
 
 </LinearLayout>
