@@ -27,7 +27,7 @@ public class Launcher extends AppCompatActivity {
         setContentView(R.layout.activity_launcher);
 
         SharedPreferences sp = getSharedPreferences("login", getApplicationContext().MODE_PRIVATE);
-        sp.edit().putString("phone","18337295718").putString("type","1").putString("name","Xrr").apply();
+//        sp.edit().putString("phone","18337295718").putString("type","1").putString("name","Xrr").apply();
         String phone = sp.getString("phone", null);
         String type = sp.getString("type","1");
         String name = sp.getString("name","未注册用户");

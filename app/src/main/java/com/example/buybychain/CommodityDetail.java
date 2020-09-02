@@ -198,6 +198,7 @@ public class CommodityDetail extends AppCompatActivity {
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
+                                Buybychain application = (Buybychain) getApplication();
                                 com_name.setText(searchDetail.getCom_name());
                                 com_price.setText("价格：¥" + searchDetail.getCom_price());
                                 com_type.setText("类别：" + searchDetail.getCom_cate());
@@ -206,7 +207,7 @@ public class CommodityDetail extends AppCompatActivity {
                                 pro_time.setText(outTime);
                                 pro_acc.setText(searchDetail.getPro_nickname() + " (" + phoneTrans(searchDetail.getPro_acc()) + ")");
                                 cus_time.setText(sd);
-                                cus_acc.setText(hisSellitem.getCus_nickname() + " (" + phoneTrans(hisSellitem.getSell_cus_acc()) + ")");
+                                cus_acc.setText(application.getName() + " (" + phoneTrans(application.getPhone()) + ")");
                                 if (history.equals("1")) {
                                     big.removeView(button);
                                 }
@@ -229,7 +230,7 @@ public class CommodityDetail extends AppCompatActivity {
                                     big.removeView(query);
                                 }
                                 all.setVisibility(View.VISIBLE);
-                                if(hisselllist.size()<hisquerylist.size()) {
+                                if(hisselllist.size()<=hisquerylist.size()) {
                                     System.out.println("warning");
                                     warning.setVisibility(View.VISIBLE);
                                 }
